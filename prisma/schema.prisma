@@ -1,0 +1,273 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  CategoryID   Int       @id
+  CategoryName String    @unique(map: "CategoryName_UNIQUE") @db.VarChar(255)
+  product      product[]
+}
+
+model discount {
+  DiscountID         Int      @id
+  DiscountCode       String   @db.VarChar(20)
+  DiscountPercentage Decimal  @db.Decimal(3, 2)
+  ValidFrom          DateTime @db.Date
+  ValidTo            DateTime @db.Date
+  MinPurchaseAmount  Decimal  @db.Decimal(10, 2)
+  AppliesTo          String   @db.VarChar(50)
+  AppliesToID        Int
+  orders             orders   @relation(fields: [AppliesToID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "Applies To")
+
+  @@index([AppliesToID], map: "Applies To")
+}
+
+model inventory {
+  InventoryID       Int      @id
+  ProductID         Int
+  SupplierID        Int
+  Quantity          Int
+  DateStocked       DateTime @db.Date
+  ExpiryDate        DateTime @db.Date
+  CostPrice         Decimal  @db.Decimal(10, 2)
+  Manufacturer      String   @db.VarChar(255)
+  BatchNumber       String   @db.VarChar(50)
+  AdditionalDetails String   @db.Text
+  product           product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_1")
+  supplier          supplier @relation(fields: [SupplierID], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_2")
+
+  @@index([ProductID], map: "inventory_ibfk_1")
+  @@index([SupplierID], map: "inventory_ibfk_2")
+}
+
+model listing {
+  ListingID         Int      @id
+  ProductID         Int
+  SuppliedBy        Int
+  Price             Decimal  @db.Decimal(10, 2)
+  QuantityAvailable Int
+  ListingDate       DateTime @db.Date
+  PCondition        String   @db.VarChar(20)
+  PDescription      String   @db.Text
+  PStatus           String   @db.VarChar(20)
+  product           product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "listing_ibfk_1")
+  supplier          supplier @relation(fields: [SuppliedBy], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction, map: "listing_ibfk_2")
+
+  @@index([ProductID], map: "listing_ibfk_1")
+  @@index([SuppliedBy], map: "listing_ibfk_2_idx")
+}
+
+model orderitem {
+  OrderItemID  Int     @id
+  OrderID      Int
+  ProductID    Int
+  Quantity     Int
+  PricePerUnit Decimal @db.Decimal(10, 2)
+  orders       orders  @relation(fields: [OrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "orderitem_ibfk_1")
+  product      product @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "orderitem_ibfk_2")
+
+  @@index([OrderID], map: "contains_idx")
+  @@index([ProductID], map: "contains_idx1")
+}
+
+model orders {
+  OrderID     Int         @id
+  UserID      Int
+  OrderDate   DateTime    @db.Date
+  TotalAmount Decimal     @db.Decimal(10, 2)
+  OrderStatus String      @db.VarChar(255)
+  discount    discount[]
+  orderitem   orderitem[]
+  users       users       @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "contains")
+  payment     payment[]
+  sales       sales[]
+
+  @@index([UserID], map: "contains_idx")
+}
+
+model payment {
+  PaymentID     Int      @id
+  OrderID       Int
+  PaymentDate   DateTime @db.Date
+  PaymentAmount Decimal  @db.Decimal(10, 2)
+  PaymentMethod String   @db.VarChar(255)
+  PaymentStatus String   @db.VarChar(255)
+  orders        orders   @relation(fields: [OrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "has")
+
+  @@index([OrderID], map: "has_idx")
+}
+
+model product {
+  ProductID       Int            @id
+  CategoryID      Int
+  ProductName     String         @unique(map: "ProductName_UNIQUE") @db.VarChar(255)
+  ProductDesc     String         @db.VarChar(255)
+  Price           Decimal        @db.Decimal(10, 2)
+  StockQuantity   Int
+  ExpirationDate  DateTime       @db.Date
+  NutritionValues String         @db.VarChar(255)
+  inventory       inventory[]
+  listing         listing[]
+  orderitem       orderitem[]
+  category        category       @relation(fields: [CategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "belong")
+  reports         reports[]
+  review          review[]
+  sales           sales[]
+  shoppingcart    shoppingcart[]
+  supplies        supplies[]
+
+  @@index([CategoryID], map: "belong_idx")
+}
+
+model recipe {
+  RecipeID        Int           @id
+  CreatorID       Int
+  RecipeName      String        @unique(map: "RecipeName_UNIQUE") @db.VarChar(255)
+  RDescription    String        @db.Text
+  PrepTime        DateTime      @db.Time(0)
+  Instructions    String        @db.Text
+  DifficultyLevel String        @db.VarChar(20)
+  Rating          recipe_Rating
+  ServingSize     String        @db.VarChar(45)
+  users           users         @relation(fields: [CreatorID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "made by")
+
+  @@index([CreatorID], map: "made by_idx")
+}
+
+model reports {
+  ReportID            Int      @id
+  TopSellingProductID Int
+  ReportDate          DateTime @db.Date
+  SalesTotal          Decimal  @db.Decimal(10, 2)
+  NumOrders           Int
+  NumProductsSold     Int
+  NumCustomers        Int
+  ReportFrom          DateTime @db.Date
+  ReportTo            DateTime @db.Date
+  product             product  @relation(fields: [TopSellingProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "reports_ibfk_1")
+
+  @@index([TopSellingProductID], map: "reports_ibfk_1")
+}
+
+model review {
+  ReviewID   Int           @id
+  UserID     Int
+  ProductID  Int
+  Rating     review_Rating
+  ReviewText String        @db.VarChar(255)
+  ReviewDate DateTime      @db.Date
+  users      users         @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_1")
+  product    product       @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_2")
+
+  @@index([UserID], map: "contains_idx")
+  @@index([ProductID], map: "review_ibfk_2")
+}
+
+model sales {
+  SalesID       Int      @id
+  OrderID       Int
+  ProductID     Int
+  QuantitySold  Int
+  SalePrice     Decimal  @db.Decimal(10, 2)
+  SaleDate      DateTime @db.DateTime(0)
+  DiscountApply Decimal  @db.Decimal(3, 2)
+  orders        orders   @relation(fields: [OrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction, map: "sales_ibfk_1")
+  product       product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "sales_ibfk_2")
+
+  @@index([OrderID], map: "sales_ibfk_1")
+  @@index([ProductID], map: "sales_ibfk_2")
+}
+
+model shoppingcart {
+  CartID     Int      @id
+  UserID     Int
+  ProductID  Int
+  Quantity   Int
+  AddedDate  DateTime @db.Date
+  TotalPrice Decimal  @db.Decimal(10, 2)
+  users      users    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_1")
+  product    product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_2")
+
+  @@index([ProductID], map: "contains_idx")
+  @@index([UserID], map: "shoppingcart_ibfk_1")
+}
+
+model supplier {
+  SupplierID    Int         @id
+  SupplierName  String      @db.VarChar(100)
+  ContactPerson String      @db.VarChar(100)
+  ContactNumber String      @db.VarChar(10)
+  Email         String      @db.VarChar(100)
+  Address       String      @db.VarChar(255)
+  City          String      @db.VarChar(45)
+  PaymentTerms  String      @db.VarChar(50)
+  inventory     inventory[]
+  listing       listing[]
+  supplies      supplies[]
+}
+
+model supplies {
+  SupplierID     Int
+  ProductID      Int
+  PurchasedPrice Decimal  @db.Decimal(10, 2)
+  DeliveryPeriod DateTime @db.Time(0)
+  supplier       supplier @relation(fields: [SupplierID], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction, map: "supplies_ibfk_1")
+  product        product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "supplies_ibfk_2")
+
+  @@id([SupplierID, ProductID])
+  @@index([ProductID], map: "ProductID")
+}
+
+model users {
+  UserID                              Int            @id
+  ManagerID                           Int
+  EmployeeID                          Int
+  Username                            String         @unique(map: "Username_UNIQUE") @db.VarChar(50)
+  Password                            String         @db.VarChar(255)
+  Email                               String         @db.VarChar(100)
+  FirstName                           String         @db.VarChar(100)
+  LastName                            String         @db.VarChar(100)
+  Address                             String         @db.VarChar(255)
+  PhoneNumber                         String         @db.VarChar(20)
+  UserType                            users_UserType
+  HireDate                            DateTime       @db.Date
+  Salary                              Decimal        @db.Decimal(10, 2)
+  orders                              orders[]
+  recipe                              recipe[]
+  review                              review[]
+  shoppingcart                        shoppingcart[]
+  users_users_ManagerIDTousers        users          @relation("users_ManagerIDTousers", fields: [ManagerID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_1")
+  other_users_users_ManagerIDTousers  users[]        @relation("users_ManagerIDTousers")
+  users_users_EmployeeIDTousers       users          @relation("users_EmployeeIDTousers", fields: [EmployeeID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_2")
+  other_users_users_EmployeeIDTousers users[]        @relation("users_EmployeeIDTousers")
+
+  @@index([EmployeeID], map: "EmployeeID")
+  @@index([ManagerID], map: "ManagerID")
+}
+
+enum review_Rating {
+  // 1 @map("1")
+  // 2 @map("2")
+  // 3 @map("3")
+  // 4 @map("4")
+  // 5 @map("5")
+}
+
+enum recipe_Rating {
+  // 1 @map("1")
+  // 2 @map("2")
+  // 3 @map("3")
+  // 4 @map("4")
+  // 5 @map("5")
+}
+
+enum users_UserType {
+  Customer
+  Employee
+  Manager
+}
