@@ -125,16 +125,15 @@ model product {
 }
 
 model recipe {
-  RecipeID        Int           @id
+  RecipeID        Int      @id
   CreatorID       Int
-  RecipeName      String        @unique(map: "RecipeName_UNIQUE") @db.VarChar(255)
-  RDescription    String        @db.Text
-  PrepTime        DateTime      @db.Time(0)
-  Instructions    String        @db.Text
-  DifficultyLevel String        @db.VarChar(20)
-  Rating          recipe_Rating
-  ServingSize     String        @db.VarChar(45)
-  users           users         @relation(fields: [CreatorID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "made by")
+  RecipeName      String   @unique(map: "RecipeName_UNIQUE") @db.VarChar(255)
+  RDescription    String   @db.Text
+  PrepTime        DateTime @db.Time(0)
+  Instructions    String   @db.Text
+  DifficultyLevel String   @db.VarChar(20)
+  ServingSize     String   @db.VarChar(45)
+  users           users    @relation(fields: [CreatorID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "made by")
 
   @@index([CreatorID], map: "made by_idx")
 }
@@ -155,14 +154,14 @@ model reports {
 }
 
 model review {
-  ReviewID   Int           @id
+  ReviewID   Int      @id
   UserID     Int
   ProductID  Int
-  Rating     review_Rating
-  ReviewText String        @db.VarChar(255)
-  ReviewDate DateTime      @db.Date
-  users      users         @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_1")
-  product    product       @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_2")
+  ReviewText String   @db.VarChar(255)
+  ReviewDate DateTime @db.Date
+  Rating     String?  @db.VarChar(45)
+  users      users    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_1")
+  product    product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_2")
 
   @@index([UserID], map: "contains_idx")
   @@index([ProductID], map: "review_ibfk_2")
@@ -248,22 +247,6 @@ model users {
 
   @@index([EmployeeID], map: "EmployeeID")
   @@index([ManagerID], map: "ManagerID")
-}
-
-enum review_Rating {
-  // 1 @map("1")
-  // 2 @map("2")
-  // 3 @map("3")
-  // 4 @map("4")
-  // 5 @map("5")
-}
-
-enum recipe_Rating {
-  // 1 @map("1")
-  // 2 @map("2")
-  // 3 @map("3")
-  // 4 @map("4")
-  // 5 @map("5")
 }
 
 enum users_UserType {
