@@ -76,7 +76,7 @@ export default function Checkout(){
             alt="Your Company"
           />
           <div className="flex justify-center ">
-            <a href="../">return to home</a>
+            <a href="../" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">return to home</a>
           </div>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
@@ -94,7 +94,11 @@ export default function Checkout(){
                 <input className="border-4 border-black rounded-lg" type="text" id="password" value={password} onChange={onChange} />
                 <br />
                 <br />
-                <button type="submit" >Sign in</button>
+                <a href="/pages/login">
+                    <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                        Sign In
+                    </button>
+                </a>
             </form>
         
 

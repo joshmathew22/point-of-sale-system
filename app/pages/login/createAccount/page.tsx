@@ -116,10 +116,15 @@ export default function createAccount(){
                 <br />
        
                 <a href="/pages/login">
-                    <button type="submit">Create Profile</button>
+                    <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                        Create Profile
+                    </button>
                 </a>
                 <br />
-                <a href="/pages/login">back</a>
+                <a href="/pages/login" className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow">
+                    Back
+                </a>
+        
 
             </form>
         </>
