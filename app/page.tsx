@@ -1,22 +1,25 @@
 "use client"
-import Image from "next/image";
-import { Prisma, product } from "@prisma/client";
-import { Products } from "@/types";
 
+import { Products, Users } from "@/types";
 import { PrismaClient } from '@prisma/client'
 import { useEffect, useState } from "react";
+import { userStore } from "./pages/store";
 const prisma = new PrismaClient()
 
 var cart:Products[] = []
 import axios from "axios";
 
-
 function test(p:Products){
   var length = cart.push(p)
-  //console.log(cart)
+  console.log(cart)
 }
 
 export default function Home() {
+  const {user} = userStore();
+  const{signOut} = userStore()
+
+  const[isToggled, setIsToggled] = useState(false)
+  
   const[products, setProducts] = useState<Products[]>()
   var total:number = 0
   useEffect(()=>{
@@ -39,11 +42,15 @@ export default function Home() {
       )
     }
     </div>
+    <div>{user}</div>
     */
     <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
       <div className='flex justify-between'> 
-            <a href="pages/login">Log in</a>
-            <div>Grocery Store</div>
+            {(user==0)? //check if user is signed in 
+              <a href="pages/login">Log in</a>:<button onClick={() =>signOut(0)}>Sign Out</button>
+            }
+            <a href="pages/dashboard">Dashboard</a>
             <a href="pages/checkout">Checkout</a>
           </div>
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -78,17 +85,3 @@ export default function Home() {
 }
 export{cart}
 
-/*
-<div className="mt-4 flex justify-between">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <a href={product.href'#'}>
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    {product.ProductName}
-                  </a>
-                </h3>
-                <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-              </div>
-              <p className="text-sm font-medium text-gray-900">{product.price}</p>
-            </div>
-*/

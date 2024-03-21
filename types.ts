@@ -10,14 +10,12 @@ export interface Products{
 }
 
 export interface Users{
-    UserID: number;
-    ManagerID: number;
-    EmployeeID: number;
-    Username: string;
-    Password: string;
-    Email: string;
-    FirstName: string;
-    LastName: string;
-    Address: string;
-    Phone: number;
+    UserID: number,
+    Username:string,
+    Pass:string,
+    Email:string,
+    FirstName: string,
+    LastName: string,
+    Address: string,
+    PhoneNumber: string
 }

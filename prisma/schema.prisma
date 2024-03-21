@@ -83,11 +83,8 @@ model orders {
   OrderStatus String      @db.VarChar(255)
   discount    discount[]
   orderitem   orderitem[]
-  users       users       @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "contains")
   payment     payment[]
   sales       sales[]
-
-  @@index([UserID], map: "contains_idx")
 }
 
 model payment {
@@ -163,8 +160,8 @@ model review {
   users      users    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_1")
   product    product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_2")
 
-  @@index([UserID], map: "contains_idx")
   @@index([ProductID], map: "review_ibfk_2")
+  @@index([UserID], map: "review_idx")
 }
 
 model sales {
@@ -193,7 +190,7 @@ model shoppingcart {
   product    product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_2")
 
   @@index([ProductID], map: "contains_idx")
-  @@index([UserID], map: "shoppingcart_ibfk_1")
+  @@index([UserID], map: "belongs to_idx")
 }
 
 model supplier {
@@ -223,34 +220,15 @@ model supplies {
 }
 
 model users {
-  UserID                              Int            @id
-  ManagerID                           Int
-  EmployeeID                          Int
-  Username                            String         @unique(map: "Username_UNIQUE") @db.VarChar(50)
-  Password                            String         @db.VarChar(255)
-  Email                               String         @db.VarChar(100)
-  FirstName                           String         @db.VarChar(100)
-  LastName                            String         @db.VarChar(100)
-  Address                             String         @db.VarChar(255)
-  PhoneNumber                         String         @db.VarChar(20)
-  UserType                            users_UserType
-  HireDate                            DateTime       @db.Date
-  Salary                              Decimal        @db.Decimal(10, 2)
-  orders                              orders[]
-  recipe                              recipe[]
-  review                              review[]
-  shoppingcart                        shoppingcart[]
-  users_users_ManagerIDTousers        users          @relation("users_ManagerIDTousers", fields: [ManagerID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_1")
-  other_users_users_ManagerIDTousers  users[]        @relation("users_ManagerIDTousers")
-  users_users_EmployeeIDTousers       users          @relation("users_EmployeeIDTousers", fields: [EmployeeID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_2")
-  other_users_users_EmployeeIDTousers users[]        @relation("users_EmployeeIDTousers")
-
-  @@index([EmployeeID], map: "EmployeeID")
-  @@index([ManagerID], map: "ManagerID")
-}
-
-enum users_UserType {
-  Customer
-  Employee
-  Manager
+  UserID       Int            @id
+  Username     String?        @db.VarChar(50)
+  Pass         String?        @db.VarChar(255)
+  Email        String?        @db.VarChar(100)
+  FirstName    String?        @db.VarChar(100)
+  LastName     String?        @db.VarChar(100)
+  Address      String?        @db.VarChar(255)
+  PhoneNumber  String?        @db.VarChar(20)
+  recipe       recipe[]
+  review       review[]
+  shoppingcart shoppingcart[]
 }
