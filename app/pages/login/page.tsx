@@ -91,7 +91,7 @@ export default function Checkout(){
 
                 <label htmlFor="password">Password</label>
                 <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="password" value={password} onChange={onChange} />
+                <input className="border-4 border-black rounded-lg" type="password" id="password" value={password} onChange={onChange} />
                 <br />
                 <br />
                 <a href="/pages/login">
