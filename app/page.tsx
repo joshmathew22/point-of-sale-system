@@ -10,7 +10,7 @@ const prisma = new PrismaClient()
 var cart:Products[] = []
 import axios from "axios";
 
-
+var inc:number = 0
 
 export default function Home() {
   const {user} = userStore();
@@ -21,6 +21,7 @@ export default function Home() {
   //display all products on main page
   const[products, setProducts] = useState<Products[]>()
   var total:number = 0
+
   useEffect(()=>{
     axios
       .get<Products[]>('api/products')
@@ -35,12 +36,15 @@ export default function Home() {
   }
 
   //when product is clicked it gets added to cart in database
+  
+  //console.log(inc)
   const addToCart = async (p:Products) =>{
     var length = cart.push(p)
     //let dateTime = new Date() //time created
     //console.log()
+    inc++
     axios.post('api/checkout', {
-        CartID: 6,
+        CartID:inc,
         UserID:user,
         ProductID: p.ProductID,
         Quantity: 1,
@@ -50,6 +54,7 @@ export default function Home() {
     }) .catch(function(error){
         toast.error("something went wrong")
     })
+    console.log(inc)
   };
   return(
     /*
