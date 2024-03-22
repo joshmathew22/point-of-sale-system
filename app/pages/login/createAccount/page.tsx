@@ -63,7 +63,7 @@ export default function createAccount(){
             toast.error("something went wrong")
         })
 
-
+        window.location.href = "../login";
         //setFormData(defaultFormData);
     };
 
