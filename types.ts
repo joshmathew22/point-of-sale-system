@@ -19,3 +19,12 @@ export interface Users{
     Address: string,
     PhoneNumber: string
 }
+
+export interface Checkout{
+    CartID: number,
+    UserID:number,
+    ProductID:number,
+    Quantity: number,
+    TotalPrice: number
+}
+

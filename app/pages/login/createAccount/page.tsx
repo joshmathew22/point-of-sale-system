@@ -58,7 +58,7 @@ export default function createAccount(){
         }) .then(()=>{
             toast("user added!")
             setFormData(defaultFormData);
-            UID= UID+1
+            //UID= UID+1
         }) .catch(function(error){
             toast.error("something went wrong")
         })

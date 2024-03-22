@@ -4,22 +4,21 @@ import { Products, Users } from "@/types";
 import { PrismaClient } from '@prisma/client'
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
+import toast from "react-hot-toast";
 const prisma = new PrismaClient()
 
 var cart:Products[] = []
 import axios from "axios";
 
-function test(p:Products){
-  var length = cart.push(p)
-  console.log(cart)
-}
+
 
 export default function Home() {
   const {user} = userStore();
   const{signOut} = userStore()
 
-  const[isToggled, setIsToggled] = useState(false)
+  const[isToggled, setIsToggled] = useState(false) //toggle between log in and sign out
   
+  //display all products on main page
   const[products, setProducts] = useState<Products[]>()
   var total:number = 0
   useEffect(()=>{
@@ -34,6 +33,24 @@ export default function Home() {
   if(products?.length ===0){
     return null
   }
+
+  //when product is clicked it gets added to cart in database
+  const addToCart = async (p:Products) =>{
+    var length = cart.push(p)
+    //let dateTime = new Date() //time created
+    //console.log()
+    axios.post('api/checkout', {
+        CartID: 6,
+        UserID:user,
+        ProductID: p.ProductID,
+        Quantity: 1,
+        TotalPrice: p.Price
+    }) .then(()=>{
+        toast("product added to cart!") 
+    }) .catch(function(error){
+        toast.error("something went wrong")
+    })
+  };
   return(
     /*
     <div>
@@ -64,7 +81,7 @@ export default function Home() {
                   src={product.ProductDesc}
                   //alt={product.imageAlt}
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  onClick={()=>{test(product)}}
+                  onClick={()=>{addToCart(product)}}
                 />
               </div>
               <div className="mt-4 flex justify-between">

@@ -180,14 +180,13 @@ model sales {
 }
 
 model shoppingcart {
-  CartID     Int      @id
+  CartID     Int     @id
   UserID     Int
   ProductID  Int
   Quantity   Int
-  AddedDate  DateTime @db.Date
-  TotalPrice Decimal  @db.Decimal(10, 2)
-  users      users    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_1")
-  product    product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_2")
+  TotalPrice Decimal @db.Decimal(10, 2)
+  users      users   @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_1")
+  product    product @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_2")
 
   @@index([ProductID], map: "contains_idx")
   @@index([UserID], map: "belongs to_idx")
