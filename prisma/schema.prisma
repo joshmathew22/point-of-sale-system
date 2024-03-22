@@ -180,7 +180,7 @@ model sales {
 }
 
 model shoppingcart {
-  CartID     Int     @id
+  CartID     Int     @id @default(autoincrement())
   UserID     Int
   ProductID  Int
   Quantity   Int
@@ -227,7 +227,14 @@ model users {
   LastName     String?        @db.VarChar(100)
   Address      String?        @db.VarChar(255)
   PhoneNumber  String?        @db.VarChar(20)
+  manager      manager?
   recipe       recipe[]
   review       review[]
   shoppingcart shoppingcart[]
+}
+
+model manager {
+  ManagerID Int    @id
+  UserID    Int?   @unique(map: "UserID")
+  users     users? @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "is")
 }

@@ -42,7 +42,7 @@ export default function Home() {
     var length = cart.push(p)
     //let dateTime = new Date() //time created
     //console.log()
-    inc++
+    //inc++
     axios.post('api/checkout', {
         CartID:inc,
         UserID:user,
