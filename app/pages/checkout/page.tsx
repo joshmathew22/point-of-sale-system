@@ -43,51 +43,52 @@ const Checkout: NextPage = () => {
     })
     return (
         
-        <div>
-            Checkout Page
-            <br />
-            <a href="../">back</a>
-            <div className="mt-8">
-                        <div className="flow-root">
-                          <ul role="list" className="-my-6 divide-y divide-gray-200">
-                            {products?.map((product) => (
-                              <li key={product.CartID} className="flex py-6">
-                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                  <img
-                                    src={product.ProductDesc}
-                                    //alt={product.imageAlt}
-                                    className="h-full w-full object-cover object-center"
-                                  />
-                                </div>
-
-                                <div className="ml-4 flex flex-1 flex-col">
-                                  <div>
-                                    <div className="flex justify-between text-base font-medium text-gray-900">
-                    
-                                      <p className="ml-4">{product.ProductName}</p>
-                                    </div>
-
-                                  </div>
-                                  <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty {product.Quantity}</p>
-    
-                                    <div className="flex">
-                                      <button
-                                        type="button"
-                                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                                        onClick={()=>{removeItem(product.CartID)}}
-                                      >
-                                        Remove
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                          <p className="mt-8">total Price: {total}</p>
+      <div className="relative isolate px-6 pt-14 lg:px-8">
+        <div className="">
+          <a href="../">back</a>
+          <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Checkout</div>
+        </div>
+        <div className="mt-8">
+                <div className="flow-root">
+                  <ul role="list" className="-my-6 divide-y divide-gray-200">
+                    {products?.map((product) => (
+                      <li key={product.CartID} className="flex py-6">
+                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                          <img
+                            src={product.ProductDesc}
+                            //alt={product.imageAlt}
+                            className="h-full w-full object-cover object-center"
+                          />
                         </div>
-                      </div>
+
+                        <div className="ml-4 flex flex-1 flex-col">
+                          <div>
+                            <div className="flex justify-between text-base font-medium text-gray-900">
+            
+                              <p className="ml-4">{product.ProductName}</p>
+                            </div>
+
+                          </div>
+                          <div className="flex flex-1 items-end justify-between text-sm">
+                            <p className="text-gray-500">Qty {product.Quantity}</p>
+
+                            <div className="flex">
+                              <button
+                                type="button"
+                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                onClick={()=>{removeItem(product.CartID)}}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-8">total Price: {total}</p>
+                </div>
+              </div>
         </div>
     );
 }

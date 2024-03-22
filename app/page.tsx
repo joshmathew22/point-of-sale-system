@@ -1,6 +1,6 @@
 "use client"
 
-import { Products, Users } from "@/types";
+import { Products, Users, Manager } from "@/types";
 import { PrismaClient } from '@prisma/client'
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
@@ -36,13 +36,9 @@ export default function Home() {
   }
 
   //when product is clicked it gets added to cart in database
-  
-  //console.log(inc)
   const addToCart = async (p:Products) =>{
     var length = cart.push(p)
     //let dateTime = new Date() //time created
-    //console.log()
-    //inc++
     axios.post('api/checkout', {
         CartID:inc,
         UserID:user,
@@ -56,6 +52,26 @@ export default function Home() {
     })
     console.log(inc)
   };
+
+
+  //check if user is admin, if so display dashboard
+  var isManager:boolean =false;
+  const[manager, setManager] = useState<Manager[]>()
+  useEffect(()=>{
+      axios
+      .get<Manager[]>(`../api/manager?UserID=${user}`)
+      .then(response =>{
+          if(response.data){
+          setManager(response.data)
+      }})
+      .catch((err) => console.log(err));
+  },[manager]);
+  if(manager?.length ===0){
+     isManager=false
+  }else{
+    isManager=true
+  }
+//console.log(manager)
   return(
     /*
     <div>
@@ -72,7 +88,9 @@ export default function Home() {
             {(user==0)? //check if user is signed in 
               <a href="pages/login">Log in</a>:<button onClick={() =>signOut(0)}>Sign Out</button>
             }
-            <a href="pages/dashboard">Dashboard</a>
+            {(isManager)?
+            <a href="pages/dashboard">Dashboard</a>:null
+            }
             <a href="pages/checkout">Checkout</a>
           </div>
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">

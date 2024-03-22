@@ -30,3 +30,7 @@ export interface Checkout{
     ProductName: string;
 }
 
+export interface Manager{
+    ManagerID:number,
+    UserID:number
+}
