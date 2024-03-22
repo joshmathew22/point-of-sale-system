@@ -54,7 +54,7 @@ const Checkout: NextPage = () => {
                               <li key={product.CartID} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    //src={product.imageSrc}
+                                    src={product.ProductDesc}
                                     //alt={product.imageAlt}
                                     className="h-full w-full object-cover object-center"
                                   />
@@ -64,7 +64,7 @@ const Checkout: NextPage = () => {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                     
-                                      <p className="ml-4">{product.TotalPrice}</p>
+                                      <p className="ml-4">{product.ProductName}</p>
                                     </div>
 
                                   </div>

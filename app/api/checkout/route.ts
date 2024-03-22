@@ -15,15 +15,20 @@ interface reqFortmat{
     Quantity: number,
     TotalPrice: number
 }
-
+/*
+    SELECT *
+    FROM shoppingcart
+    WHERE UserID= ${UserID} 
+*/
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const UserID = searchParams.get('UserID');
     //console.log(UserID)
     const products = await prisma.$queryRaw<Checkout[]>`
-    SELECT *
-    FROM shoppingcart
-    WHERE UserID= ${UserID}
+    SELECT sc.*, p.ProductName, p.ProductDesc
+    FROM shoppingcart sc
+    JOIN product p ON sc.ProductID = p.ProductID 
+    WHERE sc.UserID= ${UserID}
     `//WHERE {abc}=UserID`
     return new Response(JSON.stringify(products))
   }

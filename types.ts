@@ -26,5 +26,7 @@ export interface Checkout{
     ProductID:number,
     Quantity: number,
     TotalPrice: number
+    ProductDesc: string;
+    ProductName: string;
 }
 
