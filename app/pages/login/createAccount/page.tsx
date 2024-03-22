@@ -73,55 +73,71 @@ export default function createAccount(){
                 Create Account
             </h2>
             <form onSubmit={onSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
-                <label htmlFor="fn">First Name</label>
+                <label htmlFor="fn">
+                    First Name <span className="text-red-500">*</span>
+                </label>
                 <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="fn" value={fn} onChange={onChange} />
+                <input className="border-4 border-black rounded-lg" type="text" id="fn" value={fn} onChange={onChange} required />
                 <br />
                 <br />
-
-                <label htmlFor="ln">Last Name</label>
+    
+                <label htmlFor="ln">
+                    Last Name <span className="text-red-500">*</span>
+                </label>
                 <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="ln" value={ln} onChange={onChange} />
+                <input className="border-4 border-black rounded-lg" type="text" id="ln" value={ln} onChange={onChange} required />
                 <br />
                 <br />
                 
-                <label htmlFor="un">Username</label>
+                <label htmlFor="un">
+                    Username <span className="text-red-500">*</span>
+                </label>
                 <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="un" value={un} onChange={onChange} />
-                <br />
-                <br />
-
-                <label htmlFor="fn">Password</label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="pass" value={pass} onChange={onChange} />
+                <input className="border-4 border-black rounded-lg" type="text" id="un" value={un} onChange={onChange} required />
                 <br />
                 <br />
-
-                <label htmlFor="fn">Address</label>
+    
+                <label htmlFor="pass">
+                    Password <span className="text-red-500">*</span>
+                </label>
                 <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="address" value={address} onChange={onChange} />
-                <br />
-                <br />
-
-                <label htmlFor="fn">Number</label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="number" value={number} onChange={onChange} />
+                <input className="border-4 border-black rounded-lg" type="password" id="pass" value={pass} onChange={onChange} required />
                 <br />
                 <br />
-
-                <label htmlFor="fn">E-mail</label>
+    
+                <label htmlFor="address">
+                    Address <span className="text-red-500">*</span>
+                </label>
                 <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="email" value={email} onChange={onChange} />
+                <input className="border-4 border-black rounded-lg" type="text" id="address" value={address} onChange={onChange} required />
                 <br />
                 <br />
-       
-                <a href="/pages/login">
-                    <button type="submit">Create Profile</button>
+    
+                <label htmlFor="number">
+                    Number <span className="text-red-500">*</span>
+                </label>
+                <br />
+                <input className="border-4 border-black rounded-lg" type="text" id="number" value={number} onChange={onChange} required />
+                <br />
+                <br />
+    
+                <label htmlFor="email">
+                    E-mail <span className="text-red-500">*</span>
+                </label>
+                <br />
+                <input className="border-4 border-black rounded-lg" type="email" id="email" value={email} onChange={onChange} required />
+                <br />
+                <br />
+    
+                <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                    Create Profile
+                </button>
+                <br />
+                <a href="/pages/login" className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow">
+                    Back
                 </a>
-                <br />
-                <a href="/pages/login">back</a>
-
             </form>
         </>
     );
+
 }
