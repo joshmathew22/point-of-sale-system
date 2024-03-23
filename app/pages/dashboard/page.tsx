@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Category } from "@/types";
+import { Category, Products } from "@/types";
 
 const addProductsForm = {
     name:"",
@@ -33,9 +33,21 @@ const Dashboard: NextPage = () => {
     const[addCategoriesFormData, setCategoriesFormData] = useState(addCategorysForm)
     const{catName} = addCategoriesFormData;
 
+    const[products, setProducts] = useState<Products[]>()
+    //get all products from database
+    useEffect(()=>{
+        axios
+          .get<Products[]>(`../api/products`)
+          .then(response =>{
+            if(response.data){
+              setProducts(response.data)
+          }})
+          .catch((err) => console.log(err));
+      },[products]);
+      //console.log(products)
 
     const[cat, setCategory] = useState<Category[]>()
-
+    //get all categories from database
     useEffect(()=>{
         axios
         .get<Category[]>(`../api/category`)
@@ -46,19 +58,8 @@ const Dashboard: NextPage = () => {
         .catch((err) => console.log(err));
     },[cat]);
     //console.log(cat)
-    /*
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
-        setFormData((prevState)=>({
-            ...prevState,
-            [e.target.id]: e.target.value
-        }));
-        
-        setCategoriesFormData((prevState)=>({
-            ...prevState,
-            [e.target.id]: e.target.value
-        }));
-    };
-    */
+
+
     const onProductChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setFormData((prevState)=>({
             ...prevState,
@@ -190,7 +191,7 @@ const Dashboard: NextPage = () => {
                             <br />
                             <br />
                 
-                            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                 Add Product
                             </button>
                             <br />
@@ -208,15 +209,22 @@ const Dashboard: NextPage = () => {
                             <br />
                             <br />
                            
-                            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                 Add Category
                             </button>
                             <br />
                         </form>
                     </div>
+
+                    <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
+                        <h2 className="text-xl font-semibold">Stock Numbers</h2>
+                        {products?.map((product) => (
+                            <div>{product.ProductName}: {product.StockQuantity}</div>
+                        ))}
+                    </div>
+
                     <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
                         <h2 className="text-xl font-semibold">Modify Stock Quantity</h2>
-                        <p className="mt-2 text-gray-600">This is a placeholder for the second section of your dashboard.</p>
                     </div>
                 </div>
             </div>

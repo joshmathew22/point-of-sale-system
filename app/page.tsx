@@ -31,6 +31,7 @@ export default function Home() {
       }})
       .catch((err) => console.log(err));
   },[products]);
+  //console.log(products)
   /*
   if(products?.length ===0){
     return null
