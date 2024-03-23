@@ -63,7 +63,7 @@ model listing {
 }
 
 model orderitem {
-  OrderItemID  Int     @id
+  OrderItemID  Int     @id @default(autoincrement())
   OrderID      Int
   ProductID    Int
   Quantity     Int
