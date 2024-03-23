@@ -3,19 +3,41 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { Category } from "@/types";
 const addProductsForm = {
     name:"",
+    category:"",
     img:"",
     price: "",
     quantity:"",
     expiration: "",
     nutrition:""
 };
-
+function generateRandomProductId(length: number): number {
+    const min = Math.pow(10, length - 1); // Minimum value based on the length
+    const max = Math.pow(10, length) - 1; // Maximum value based on the length
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+    const[id, setID] = useState<number>()
+}
 const Dashboard: NextPage = () => {
+    var PID:number;
+    var CID:number;
+    CID = -1;
     const[formData, setFormData] = useState(addProductsForm)
-    const{name,img,price,quantity,expiration,nutrition} = formData;
+    const{name,category,img,price,quantity,expiration,nutrition} = formData;
+
+    const[cat, setCategory] = useState<Category[]>()
+
+    useEffect(()=>{
+        axios
+        .get<Category[]>(`../api/category`)
+        .then(response =>{
+            if(response.data){
+            setCategory(response.data)
+        }})
+        .catch((err) => console.log(err));
+    },[cat]);
+    //console.log(cat)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setFormData((prevState)=>({
@@ -26,11 +48,21 @@ const Dashboard: NextPage = () => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
-
-        //creating Product and adding it to database
+        
+        var catID:number
+        cat?.forEach((element)=>{
+            if(element.CategoryName ==category){
+                CID = element.CategoryID
+            }
+        })
+        if(CID===-1){
+            console.log("Category Doesnt Exist, Please create Category first")
+            return
+        }
+        PID = generateRandomProductId(8);
         axios.post('../api/products', {
-            ProductID: 4,
-            CategoryID:1,
+            ProductID: PID,
+            CategoryID:CID,
             ProductName: name,
             ProductDesc: img,
             Price: Number(price),
@@ -64,6 +96,14 @@ const Dashboard: NextPage = () => {
                             </label>
                             <br />
                             <input className="border-4 border-black rounded-lg" type="text" id="name" value={name} onChange={onChange} required />
+                            <br />
+                            <br />
+
+                            <label htmlFor="category">
+                                Product Category <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="category" value={category} onChange={onChange} required />
                             <br />
                             <br />
                             
@@ -114,7 +154,11 @@ const Dashboard: NextPage = () => {
                         </form>
                     </div>
                     <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
-                        <h2 className="text-xl font-semibold">Deleting Products</h2>
+                        <h2 className="text-xl font-semibold">Creating Category</h2>
+                        <p className="mt-2 text-gray-600">Please Note you need to create a category before you add different products</p>
+                    </div>
+                    <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
+                        <h2 className="text-xl font-semibold">Modify Stock Quantity</h2>
                         <p className="mt-2 text-gray-600">This is a placeholder for the second section of your dashboard.</p>
                     </div>
                 </div>

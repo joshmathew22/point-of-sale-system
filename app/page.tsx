@@ -31,10 +31,11 @@ export default function Home() {
       }})
       .catch((err) => console.log(err));
   },[products]);
+  /*
   if(products?.length ===0){
     return null
   }
-
+*/
   //when product is clicked it gets added to cart in database
   const addToCart = async (p:Products) =>{
     var length = cart.push(p)

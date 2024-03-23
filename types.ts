@@ -26,11 +26,16 @@ export interface Checkout{
     ProductID:number,
     Quantity: number,
     TotalPrice: number
-    ProductDesc: string;
+    ProductDesc: string,
     ProductName: string;
 }
 
 export interface Manager{
     ManagerID:number,
     UserID:number
+}
+
+export interface Category{
+    CategoryID:number,
+    CategoryName:string
 }
