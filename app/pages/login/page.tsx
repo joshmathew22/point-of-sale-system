@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Users } from "@/types";
 import { userStore } from "../store";
 
-export var a:number
+//export var a:number
 const defaultFormData = {
   username: "",
   password: ""
