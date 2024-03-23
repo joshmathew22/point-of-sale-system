@@ -17,7 +17,7 @@ function generateRandomUserId(length: number): number {
 var inc:number = 0
 
 //const CheckoutPage: NextPage = () => {
-export default function Checkout(){
+export default function CheckoutPage(){
   
     const[products, setProducts] = useState<Checkout[]>()
     const {user} = userStore();
