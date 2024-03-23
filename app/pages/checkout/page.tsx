@@ -3,7 +3,7 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { cart } from "@/app/page";
+//import { cart } from "@/app/page";
 import { Checkout } from "@/types";
 import { userStore } from "../store";
 import toast from "react-hot-toast";
