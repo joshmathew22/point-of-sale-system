@@ -1,7 +1,6 @@
 import { Products } from '@/types'
 import { NextRequest } from 'next/server'
 import prisma from '@/client'
-
 interface updateStock{
   ProductID: number;
   StockQuantity: number;
@@ -18,19 +17,11 @@ export async function GET(req: NextRequest) {
 
 //add data
 export async function POST(req: NextRequest){
-  const searchParams = req.nextUrl.searchParams;
-  const ProductID = searchParams.get('ProductID');
-  const CategoryID = searchParams.get('CategoryID');
-  const ProductName = searchParams.get('ProductName');
-  const ProductDesc = searchParams.get('ProductDesc');
-  const Price = searchParams.get('Price');
-  const StockQuantity = searchParams.get('StockQuantity');
-  const ExpirationDate = searchParams.get('ExpirationDate');
-  const NutritionValues = searchParams.get('NutritionValues');
+  const data: Products = await req.json();
 
   const newProduct = await prisma.$executeRaw`
   INSERT INTO product(ProductID, CategoryID, ProductName, ProductDesc, Price, StockQuantity, ExpirationDate, NutritionValues)
-  VALUES(${ProductID}, ${CategoryID}, ${ProductName}, ${ProductDesc}, ${Price}, ${StockQuantity}, ${ExpirationDate}, ${NutritionValues})`
+  VALUES(${data.ProductID}, ${data.CategoryID}, ${data.ProductName}, ${data.ProductDesc}, ${data.Price}, ${data.StockQuantity}, ${data.ExpirationDate}, ${data.NutritionValues} );`;
 
   return new Response(JSON.stringify(newProduct))
 }
