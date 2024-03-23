@@ -124,5 +124,5 @@ export default function Home() {
   
   )
 }
-export{cart}
+//export{cart}
 
