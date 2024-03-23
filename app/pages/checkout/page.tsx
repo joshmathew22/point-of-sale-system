@@ -8,14 +8,22 @@ import { Checkout } from "@/types";
 import { userStore } from "../store";
 import toast from "react-hot-toast";
 
-const Checkout: NextPage = () => {
+function generateRandomUserId(length: number): number {
+  const min = Math.pow(10, length - 1); // Minimum value based on the length
+  const max = Math.pow(10, length) - 1; // Maximum value based on the length
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+//const CheckoutPage: NextPage = () => {
+export default function Checkout(){
+  
     const[products, setProducts] = useState<Checkout[]>()
     const {user} = userStore();
     var total:number
     total = 0;
     var num = user
 
-    //getting data from cart in database
+    //getting products from cart in database
+    
     useEffect(()=>{
         axios
         .get<Checkout[]>(`../api/checkout?UserID=${user}`)
@@ -25,10 +33,12 @@ const Checkout: NextPage = () => {
         }})
         .catch((err) => console.log(err));
     },[products]);
+    /*
     if(products?.length ===0){
         return null
     }
-    
+    */
+    //removing product from cart
     const removeItem = async (CartID:number) =>{
         axios.delete(`../api/checkout?CartID=${CartID}`)
                     .then(() => {
@@ -37,12 +47,74 @@ const Checkout: NextPage = () => {
                     .catch(Error => console.error(Error))
     }
 
-    
+    //adds everything in cart to order
+    var OID:number
+    const userIdLength = 8; // You can adjust the length of the user ID as needed
+    OID = generateRandomUserId(userIdLength);
+
+    const addOrder = async()=>{
+      console.log(products)
+      const date = new Date();
+      const dateWithoutTime = date.toISOString().split('T')[0];
+      let x:number
+      x=0
+      if(products==null){
+        x=0
+      }else{
+        x=products.length
+      }
+
+      //create order
+      axios.post('../api/order', {
+          OrderID: OID,
+          UserID: user,
+          OrderDate:dateWithoutTime,
+          TotalAmount:products?.length,
+          OrderStatus:"Placed"
+
+      }) .then(()=>{
+          toast("user added!")
+      }) .catch(function(error){
+          toast.error("something went wrong")
+      })
+      
+      //add each items to order
+
+      
+      var a = 50;
+      products?.map((product)=>{
+          axios.post('../api/orderItems', {
+            OrderItemID: a++,
+            OrderID: OID,
+            ProductID: product.ProductID,
+            Quantity: product.Quantity,
+            PricePerUnit: product.TotalPrice / product.Quantity
+
+        }) .then(()=>{
+            toast("user added!")
+        }) .catch(function(error){
+            toast.error("something went wrong")
+        })
+      })
+
+      //delete all products from cart becuase they have been added to order
+      
+      products?.map((product)=>{
+        axios.delete(`../api/checkout?CartID=${product.CartID}`)
+          .then(() => {
+              toast.success('Removed track from album')
+          })
+          .catch(Error => console.error(Error))
+        
+      })
+
+    }
+
     products?.map((product)=>{
         total = total+ Number(product.TotalPrice)
     })
+    
     return (
-        
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="">
           <a href="../">back</a>
@@ -85,11 +157,20 @@ const Checkout: NextPage = () => {
                         </div>
                       </li>
                     ))}
+                    
                   </ul>
-                  <p className="mt-8">total Price: {total}</p>
                 </div>
               </div>
+              <p className="mt-8">total Price: {total}</p>
+              <button  
+                type = "submit"
+                className="bg-black hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                onClick={() =>{addOrder()}}>
+                        Checkout
+              </button>
         </div>
+      
     );
+    
 }
-export default Checkout;
+//export default CheckoutPage;
