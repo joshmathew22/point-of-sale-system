@@ -1,8 +1,6 @@
-import { PrismaClient, users } from '@prisma/client'
 import { Users } from '@/types'
 import { NextRequest } from 'next/server'
-
-const prisma = new PrismaClient()
+import prisma from '@/client'
 
 interface reqFortmat{
   UserID: number,

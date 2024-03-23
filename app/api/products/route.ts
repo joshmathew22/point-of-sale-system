@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client'
 import { Products } from '@/types'
 import { NextRequest } from 'next/server'
-const prisma = new PrismaClient()
+import prisma from '@/client'
 
 interface updateStock{
   ProductID: number;

@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client'
 import { Manager } from '@/types'
 import { NextRequest } from 'next/server'
-const prisma = new PrismaClient()
+import prisma from '@/client'
 
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;

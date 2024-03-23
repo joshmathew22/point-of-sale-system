@@ -1,12 +1,6 @@
-import { PrismaClient, users } from '@prisma/client'
-import { Users } from '@/types'
 import { NextRequest } from 'next/server'
-import { LargeNumberLike } from 'crypto'
 import { Checkout } from '@/types'
-import { userStore } from '@/app/pages/store'
-
-const prisma = new PrismaClient()
-
+import prisma from '@/client'
 
 interface reqFortmat{
     CartID: number,
@@ -15,11 +9,7 @@ interface reqFortmat{
     Quantity: number,
     TotalPrice: number
 }
-/*
-    SELECT *
-    FROM shoppingcart
-    WHERE UserID= ${UserID} 
-*/
+
 export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const UserID = searchParams.get('UserID');
