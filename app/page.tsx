@@ -41,7 +41,7 @@ export default function Home() {
   const addToCart = async (p:Products) =>{
     var length = cart.push(p)
     //let dateTime = new Date() //time created
-    axios.post('api/checkout', {
+    await axios.post('api/checkout', {
         CartID:inc,
         UserID:user,
         ProductID: p.ProductID,
@@ -52,6 +52,13 @@ export default function Home() {
     }) .catch(function(error){
         toast.error("something went wrong")
     })
+
+    //subtracts one from product quantity
+    await axios.patch(`api/products?StockQuantity=${--p.StockQuantity}&ProductID=${p.ProductID}`)
+      .then(() => {
+        console.log(p.StockQuantity)
+        toast("user added!")
+      }) 
     console.log(inc)
   };
 

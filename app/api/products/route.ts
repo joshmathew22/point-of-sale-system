@@ -28,13 +28,15 @@ export async function POST(req: NextRequest){
 
 //update data (stock number)
 
-export async function PATCH(req: Request){
-  const data:updateStock = await req.json();
+export async function PATCH(req: NextRequest){
+  const searchParams = req.nextUrl.searchParams;
+  const ProductID = searchParams.get('ProductID');
+  const StockQuantity = searchParams.get('StockQuantity');
 
   const result = await prisma.$executeRaw`
   UPDATE product
-  SET StockQuantity = ${data.StockQuantity}
-  WHERE ProductID = ${data.ProductID}
+  SET StockQuantity = ${Number(StockQuantity)}
+  WHERE ProductID = ${ProductID}
   `;
 
   return new Response(JSON.stringify(result))

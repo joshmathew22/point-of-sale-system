@@ -219,7 +219,7 @@ const Dashboard: NextPage = () => {
                     <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
                         <h2 className="text-xl font-semibold">Stock Numbers</h2>
                         {products?.map((product) => (
-                            <div>{product.ProductName}: {product.StockQuantity}</div>
+                            <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
                         ))}
                     </div>
 

@@ -4,7 +4,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 //import { cart } from "@/app/page";
-import { Checkout } from "@/types";
+import { Checkout, Products } from "@/types";
 import { userStore } from "../store";
 import toast from "react-hot-toast";
 
@@ -13,12 +13,13 @@ function generateRandomUserId(length: number): number {
   const max = Math.pow(10, length) - 1; // Maximum value based on the length
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
+var OID:number
+OID = generateRandomUserId(8);
 var inc:number = 0
-
+var stock:number
 //const CheckoutPage: NextPage = () => {
 export default function CheckoutPage(){
-  
+    var stockNum:number
     const[products, setProducts] = useState<Checkout[]>()
     const {user} = userStore();
     var total:number
@@ -37,29 +38,57 @@ export default function CheckoutPage(){
         }})
         .catch((err) => console.log(err));
     },[products]);
+    //console.log(products)
     
     if(products?.length ===0){
         noItems=true
     }
     
+
+    const[p, setP] = useState<Products[]>()
+    //get all products from database
+    useEffect(()=>{
+        axios
+          .get<Products[]>(`../api/products`)
+          .then(response =>{
+            if(response.data){
+              setP(response.data)
+          }})
+          .catch((err) => console.log(err));
+      },[p]);
+
     //removing product from cart
-    const removeItem = async (CartID:number) =>{
+    const removeItem = async (CartID:number, ProductID:number) =>{
         axios.delete(`../api/checkout?CartID=${CartID}`)
-                    .then(() => {
-                        toast.success('Removed track from album')
-                    })
-                    .catch(Error => console.error(Error))
+          .then(() => {
+              toast.success('Removed track from album')
+          })
+          .catch(Error => console.error(Error))
+          p?.map((prod) =>{
+            if (prod.ProductID == ProductID){
+              stock = prod.StockQuantity
+            }
+          })
+          await axios.patch(`../api/products?StockQuantity=${++stock}&ProductID=${ProductID}`)
+              .then(() => {
+                console.log(stock)
+                toast("user added!")
+              }) 
+              console.log(stockNum)
     }
 
     //adds everything in cart to order
-    var OID:number
+    //var OID:number
+    //console.log(p)
     const userIdLength = 8; // You can adjust the length of the user ID as needed
-    OID = generateRandomUserId(userIdLength);
-
+    
+    //console.log(OID)
     const addOrder = async()=>{
       console.log(products)
+      console.log(p)
       const date = new Date();
       const dateWithoutTime = date.toISOString().split('T')[0];
+      
       let x:number
       x=0
       if(products==null){
@@ -68,8 +97,11 @@ export default function CheckoutPage(){
         x=products.length
       }
 
+      //check quantity
+
+
       //create order
-      axios.post('../api/order', {
+      await axios.post('../api/order', {
           OrderID: OID,
           UserID: user,
           OrderDate:dateWithoutTime,
@@ -78,12 +110,28 @@ export default function CheckoutPage(){
 
       }) .then(()=>{
           toast("user added!")
+          console.log("order id:",OID)
       }) .catch(function(error){
           toast.error("something went wrong")
       })
-      
       //add each items to order
+      
       products?.map((product)=>{
+        //subtract quantity by one
+    /*
+        p?.map((prod) =>{
+          if (prod.ProductID == product.ProductID){
+            //stockNum = prod.StockQuantity -1
+            axios.patch(`../api/products?StockQuantity=${--prod.StockQuantity}&ProductID=${product.ProductID}`)
+            .then(() => {
+              console.log(prod.StockQuantity)
+              toast("user added!")
+            }) 
+            console.log(stockNum)
+          }
+        })*/
+        
+        console.log(OID)
           axios.post('../api/orderItems', {
             OrderItemID: inc,
             OrderID: OID,
@@ -93,13 +141,13 @@ export default function CheckoutPage(){
 
         }) .then(()=>{
             toast("user added!")
+            console.log("order id for orderItems:",OID)
         }) .catch(function(error){
             toast.error("something went wrong")
         })
       })
-
+    
       //delete all products from cart becuase they have been added to order
-      
       products?.map((product)=>{
         axios.delete(`../api/checkout?CartID=${product.CartID}`)
           .then(() => {
@@ -114,7 +162,7 @@ export default function CheckoutPage(){
     products?.map((product)=>{
         total = total+ Number(product.TotalPrice)
     })
-    
+   
     return (
       
         <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -150,7 +198,7 @@ export default function CheckoutPage(){
                                 <button
                                   type="button"
                                   className="font-medium text-indigo-600 hover:text-indigo-500"
-                                  onClick={()=>{removeItem(product.CartID)}}
+                                  onClick={()=>{removeItem(product.CartID,product.ProductID)}}
                                 >
                                   Remove
                                 </button>
@@ -181,4 +229,5 @@ export default function CheckoutPage(){
     );
     
 }
+
 //export default CheckoutPage;
