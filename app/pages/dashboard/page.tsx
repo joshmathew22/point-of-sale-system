@@ -18,11 +18,18 @@ const addProductsForm = {
 const addCategorysForm = {
     catName:""
 }
+
+const addStockForm = {
+    stockName:"",
+    stock:""
+}
+
 function generateRandomId(length: number): number {
     const min = Math.pow(10, length - 1); // Minimum value based on the length
     const max = Math.pow(10, length) - 1; // Maximum value based on the length
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 const Dashboard: NextPage = () => {
     var PID:number;
     var CID:number;
@@ -32,6 +39,9 @@ const Dashboard: NextPage = () => {
 
     const[addCategoriesFormData, setCategoriesFormData] = useState(addCategorysForm)
     const{catName} = addCategoriesFormData;
+
+    const[addStockFormData,setStockFormData]=useState(addStockForm)
+    const{stockName,stock} =addStockFormData
 
     const[products, setProducts] = useState<Products[]>()
     //get all products from database
@@ -69,6 +79,13 @@ const Dashboard: NextPage = () => {
     };
     const onCategoryChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setCategoriesFormData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+       }));
+    };
+
+    const onStockChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        setStockFormData((prevState)=>({
             ...prevState,
             [e.target.id]: e.target.value
        }));
@@ -122,6 +139,35 @@ const Dashboard: NextPage = () => {
         }) .catch(function(error){
             toast.error("something went wrong")
         })
+    }
+
+
+    
+    const AddStockSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        var StockQuantity = -1
+        var stockID = -1
+        products?.forEach((product) => {
+            if (product.ProductName === stockName) {
+                stockID = product.ProductID;
+                StockQuantity = product.StockQuantity
+
+            }
+        });
+        
+
+        if (stockID === -1) {
+            console.log("item not found");
+            // Exit function or return appropriate JSX
+            return null; // For example, returning null to render nothing
+          }
+          
+        console.log(Number(stock)+StockQuantity,stockID)
+        await axios.patch(`../api/products?StockQuantity=${Number(stock)+StockQuantity}&ProductID=${stockID}`)
+        .then(() => {
+            //console.log(p.StockQuantity)
+            toast("user added!")
+        }) 
     }
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
@@ -217,7 +263,7 @@ const Dashboard: NextPage = () => {
                     </div>
 
                     <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
-                        <h2 className="text-xl font-semibold">Stock Numbers</h2>
+                        <h2 className="text-xl font-semibold">Products/Stock Numbers</h2>
                         {products?.map((product) => (
                             <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
                         ))}
@@ -225,6 +271,28 @@ const Dashboard: NextPage = () => {
 
                     <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
                         <h2 className="text-xl font-semibold">Modify Stock Quantity</h2>
+                        <form onSubmit={AddStockSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="stockName">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="stockName" value={stockName} onChange={onStockChange} required />
+                            <br />
+                            <br />
+
+                            <label htmlFor="stock">
+                                Add # of stock? <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="stock" value={stock} onChange={onStockChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Stock
+                            </button>
+                            <br />
+                        </form>
                     </div>
                 </div>
             </div>

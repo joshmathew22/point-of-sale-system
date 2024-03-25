@@ -125,7 +125,7 @@ export default function Home() {
                       {product.ProductName}         
                   </h3>
                 </div>
-                <p className="text-sm font-medium text-gray-900">${product.Price}</p>
+                <p className="text-sm font-medium text-gray-900">$ {product.Price}</p>
               </div>
             </div>
           ))}
