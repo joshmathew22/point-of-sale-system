@@ -39,3 +39,21 @@ export interface Category{
     CategoryID:number,
     CategoryName:string
 }
+
+export interface Order{
+    OrderID:number,
+    UserID:number,
+    OrderDate: Date
+    TotalAmount: number
+    OrderStatus:string
+}
+
+export interface OrderItem{
+    OrderItemID: number,
+    OrderID: number,
+    ProductID: number,
+    Quantity: number,
+    PricePerUnit: number,
+    ProductName: string,
+    ProductDesc: string
+}

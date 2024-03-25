@@ -1,4 +1,6 @@
 import prisma from '@/client'
+import { NextRequest } from 'next/server'
+import { Order } from '@/types'
 
 interface reqFortmat{
     OrderID:number,
@@ -7,6 +9,13 @@ interface reqFortmat{
     TotalAmount: number
     OrderStatus:string
 }
+
+export async function GET(req: NextRequest) {
+    const users = await prisma.$queryRaw<Order[]>`
+    SELECT *
+    FROM orders`
+    return new Response(JSON.stringify(users))
+  }
 
 export async function POST(req: Request) {
     const data: reqFortmat = await req.json();
