@@ -41,3 +41,10 @@ export async function PATCH(req: NextRequest){
 
   return new Response(JSON.stringify(result))
 }
+//delete product given name
+export async function DELETE(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const ProductName = searchParams.get('ProductName');
+  const affected = await prisma.$executeRaw`DELETE FROM product WHERE ProductName=${ProductName}`
+  return new Response(JSON.stringify(affected));
+}

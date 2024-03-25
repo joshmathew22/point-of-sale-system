@@ -24,6 +24,10 @@ const addStockForm = {
     stock:""
 }
 
+const deleteForm = {
+    deleteName:""
+}
+
 function generateRandomId(length: number): number {
     const min = Math.pow(10, length - 1); // Minimum value based on the length
     const max = Math.pow(10, length) - 1; // Maximum value based on the length
@@ -42,6 +46,9 @@ const Dashboard: NextPage = () => {
 
     const[addStockFormData,setStockFormData]=useState(addStockForm)
     const{stockName,stock} =addStockFormData
+
+    const[deleteFormData, setDeleteFormData]=useState(deleteForm)
+    const{deleteName} =deleteFormData
 
     const[products, setProducts] = useState<Products[]>()
     //get all products from database
@@ -86,6 +93,13 @@ const Dashboard: NextPage = () => {
 
     const onStockChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setStockFormData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+       }));
+    };
+
+    const onDeleteChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        setDeleteFormData((prevState)=>({
             ...prevState,
             [e.target.id]: e.target.value
        }));
@@ -141,7 +155,13 @@ const Dashboard: NextPage = () => {
         })
     }
 
-
+    const deleteSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        axios.delete(`../api/products?ProductName=${deleteName}`)
+          .then(() => {
+              toast.success('Removed track from album')
+          })
+          .catch(Error => console.error(Error))
+    }
     
     const AddStockSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
@@ -244,8 +264,9 @@ const Dashboard: NextPage = () => {
                         </form>
                     </div>
                     <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
-                        <h2 className="text-xl font-semibold">Creating Category</h2>
+                        <h2 className="text-xl font-semibold">Categories</h2>
                         <p className="mt-2 text-gray-600">Please Note you need to create a category before you add different products</p>
+                        <h2 className="mt-10 text-xl font-semibold">Add Category</h2>
                         <form onSubmit={AddCategorySubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
                             <label htmlFor="catName">
                                 Category Name <span className="text-red-500">*</span>
@@ -257,6 +278,28 @@ const Dashboard: NextPage = () => {
                            
                             <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                 Add Category
+                            </button>
+                            <br />
+                        </form>
+                        <h2 className="mt-10 text-xl font-semibold">Current Categories</h2>
+                        {cat?.map((category) => (
+                            <div key={category.CategoryID}>{category.CategoryName}</div>
+                        ))}
+                    </div>
+                    
+                    <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200">
+                        <h2 className="text-xl font-semibold">Delete Product</h2>
+                        <form onSubmit={deleteSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="deleteName">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="deleteName" value={deleteName} onChange={onDeleteChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Delete Product
                             </button>
                             <br />
                         </form>
