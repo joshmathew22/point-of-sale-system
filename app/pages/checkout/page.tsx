@@ -197,7 +197,7 @@ export default function CheckoutPage(){
                               <div className="flex">
                                 <button
                                   type="button"
-                                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                                  className="font-medium text-red-500 hover:text-red-600"
                                   onClick={()=>{removeItem(product.CartID,product.ProductID)}}
                                 >
                                   Remove
@@ -218,7 +218,7 @@ export default function CheckoutPage(){
                 <p className="mt-8">total Price: {total}</p>
                 <button  
                   type = "submit"
-                  className="bg-black hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                  className="bg-black text-white font-bold py-2 px-4 rounded"
                   onClick={() =>{addOrder()}}>
                           Checkout
                 </button>

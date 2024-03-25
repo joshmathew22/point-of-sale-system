@@ -75,7 +75,7 @@ export default function Checkout(){
             alt="Your Company"
           />
           <div className="flex justify-center ">
-            <a href="../" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">return to home</a>
+            <a href="../" className="font-semibold leading-6 text-md text-gray-500">return to home</a>
           </div>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
@@ -94,7 +94,7 @@ export default function Checkout(){
                 <br />
                 <br />
                 <a href="/pages/login">
-                    <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                    <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                         Sign In
                     </button>
                 </a>
@@ -103,7 +103,7 @@ export default function Checkout(){
 
           <p className="mt-10 text-center text-sm text-gray-500">
             New User?{' '}
-            <a href="login/createAccount" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <a href="login/createAccount" className="font-semibold leading-6 text-red-500 hover:text-red-600">
               Create Account
             </a>
           </p>
