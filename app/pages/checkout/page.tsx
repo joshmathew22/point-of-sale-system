@@ -156,7 +156,7 @@ export default function CheckoutPage(){
           .catch(Error => console.error(Error))
         
       })
-
+      window.location.href = "../";
     }
 
     products?.map((product)=>{
