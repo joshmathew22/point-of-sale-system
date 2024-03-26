@@ -13,7 +13,8 @@ interface reqFortmat{
 export async function GET(req: NextRequest) {
     const users = await prisma.$queryRaw<Order[]>`
     SELECT *
-    FROM orders`
+    FROM orders
+    ORDER BY OrderDate DESC`
     return new Response(JSON.stringify(users))
   }
 
