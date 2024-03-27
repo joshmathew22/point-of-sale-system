@@ -73,70 +73,69 @@ export default function createAccount(){
                 Create Account
             </h2>
             <form onSubmit={onSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
-                <label htmlFor="fn">
-                    First Name <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="fn" value={fn} onChange={onChange} required />
-                <br />
-                <br />
+    <div className="inline-block mr-4">
+        <label htmlFor="fn">
+            First Name <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="text" id="fn" value={fn} onChange={onChange} required /><br /><br />
+    </div>
     
-                <label htmlFor="ln">
-                    Last Name <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="ln" value={ln} onChange={onChange} required />
-                <br />
-                <br />
-                
-                <label htmlFor="un">
-                    Username <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="un" value={un} onChange={onChange} required />
-                <br />
-                <br />
+    <div className="inline-block mr-4">
+        <label htmlFor="ln">
+            Last Name <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="text" id="ln" value={ln} onChange={onChange} required /><br /><br />
+    </div>
     
-                <label htmlFor="pass">
-                    Password <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="password" id="pass" value={pass} onChange={onChange} required />
-                <br />
-                <br />
+    <div className="inline-block mr-4">
+        <label htmlFor="un">
+            Username <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="text" id="un" value={un} onChange={onChange} required /><br /><br />
+    </div>
     
-                <label htmlFor="address">
-                    Address <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="address" value={address} onChange={onChange} required />
-                <br />
-                <br />
+    <div className="inline-block mr-4">
+        <label htmlFor="pass">
+            Password <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="password" id="pass" value={pass} onChange={onChange} required /><br /><br />
+    </div>
     
-                <label htmlFor="number">
-                    Number <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="text" id="number" value={number} onChange={onChange} required />
-                <br />
-                <br />
+    <div className="w-full"></div> {/* Clearfix */}
     
-                <label htmlFor="email">
-                    E-mail <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <input className="border-4 border-black rounded-lg" type="email" id="email" value={email} onChange={onChange} required />
-                <br />
-                <br />
+    <div className="inline-block mr-4">
+        <label htmlFor="address">
+            Address <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="text" id="address" value={address} onChange={onChange} required /><br /><br />
+    </div>
     
-                <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                    Create Profile
-                </button>
-                <br />
-                <a href="/pages/login" className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow">
-                    Back
-                </a>
-            </form>
+    <div className="inline-block mr-4">
+        <label htmlFor="number">
+            Number <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="text" id="number" value={number} onChange={onChange} required /><br /><br />
+    </div>
+    
+    <div className="inline-block mr-4">
+        <label htmlFor="email">
+            E-mail <span className="text-red-500">*</span>
+        </label><br />
+        <input className="border-4 border-black rounded-lg" type="email" id="email" value={email} onChange={onChange} required /><br /><br />
+    </div>
+    
+    <div className="text-center"> {/* Centered button wrapper */}
+        <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+            Create Profile
+        </button><br />
+    </div>
+    
+    <a href="/pages/login" className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded shadow">
+        Back
+    </a>
+</form>
+
+
         </>
     );
 

@@ -190,7 +190,288 @@ const Dashboard: NextPage = () => {
         }) 
     }
     return (
+        
         <div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
+    <a href="../">back</a>
+    <div className="mb-5 text-center">
+        <h1 className="text-4xl font-extrabold leading-9 tracking-tight">Dashboard</h1>
+        <p className="mt-2 text-lg">Hello Admin!</p>
+    </div>
+    <div className="max-w-4xl mx-auto">
+        <div className="flex flex-wrap justify-center">
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Adding Products</h2>
+                <form onSubmit={AddProductSubmit} className="mt-5 text-lg leading-9 tracking-tight text-gray-900">
+                    <div className="flex flex-wrap justify-between">
+                        <div className="w-full md:w-1/2 pr-4">
+                            <label htmlFor="name">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="name" value={name} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="category">
+                                Product Category <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="category" value={category} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pr-4">
+                            <label htmlFor="img">
+                                Product Image <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="img" value={img} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="price">
+                                Product Price <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="number" id="price" value={price} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pr-4">
+                            <label htmlFor="quantity">
+                                Product Quantity <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="number" id="quantity" value={quantity} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="expiration">
+                                Expiration Date <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="date" id="expiration" value={expiration} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full">
+                            <label htmlFor="nutrition">
+                                Nutrition <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="nutrition" value={nutrition} onChange={onProductChange} required />
+                        </div>
+                    </div>
+                    <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded mt-4">
+                        Add Product
+                    </button>
+                </form>
+            </div>
+
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Categories</h2>
+                <form onSubmit={AddCategorySubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="catName">
+                                Category Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="catName" value={catName} onChange={onCategoryChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Category
+                            </button>
+                            <br />
+                        </form>
+                        <h2 className="mt-10 text-xl font-semibold">Current Categories</h2>
+                        {cat?.map((category) => (
+                            <div key={category.CategoryID}>{category.CategoryName}</div>
+                        ))}
+     
+            </div>
+
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Delete Product</h2>
+                <form onSubmit={deleteSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="deleteName">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="deleteName" value={deleteName} onChange={onDeleteChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Delete Product
+                            </button>
+                            <br />
+                        </form>
+            </div>
+
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Products/Stock Numbers</h2>
+                {products?.map((product) => (
+                            <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
+                        ))}
+            </div>
+
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Modify Stock Quantity</h2>
+                <form onSubmit={AddStockSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="stockName">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="stockName" value={stockName} onChange={onStockChange} required />
+                            <br />
+                            <br />
+
+                            <label htmlFor="stock">
+                                Add # of stock? <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="stock" value={stock} onChange={onStockChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Stock
+                            </button>
+                            <br />
+                        </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+                    
+                    
+    );
+};
+
+export default Dashboard;
+/*
+<div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
+        <a href="../">back</a>
+        <div className="mb-5 text-center">
+            <h1 className="text-4xl font-extrabold leading-9 tracking-tight ">Dashboard</h1>
+            <p className="mt-2 text-lg">Hello Admin!</p>
+        </div>
+        <div className="max-w-4xl mx-auto">
+            <div className="flex flex-wrap justify-center">
+                <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                    <h2 className="text-xl font-semibold">Adding Products</h2>
+                    <form onSubmit={AddProductSubmit} className="mt-5 text-lg leading-9 tracking-tight text-gray-900">
+                    <div className="flex flex-wrap justify-between">
+                        <div className="w-full md:w-1/2 pr-4">
+                            <label htmlFor="name">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="name" value={name} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="category">
+                                Product Category <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="category" value={category} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pr-4">
+                            <label htmlFor="img">
+                                Product Image <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="img" value={img} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="price">
+                                Product Price <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="number" id="price" value={price} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pr-4">
+                            <label htmlFor="quantity">
+                                Product Quantity <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="number" id="quantity" value={quantity} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="expiration">
+                                Expiration Date <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="date" id="expiration" value={expiration} onChange={onProductChange} required />
+                        </div>
+                        <div className="w-full">
+                            <label htmlFor="nutrition">
+                                Nutrition <span className="text-red-500">*</span>
+                            </label>
+                            <input className="border-4 border-black rounded-lg w-full" type="text" id="nutrition" value={nutrition} onChange={onProductChange} required />
+                        </div>
+                    </div>
+                    <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded mt-4">
+                        Add Product
+                    </button>
+                </form>
+                </div>
+                <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                    <h2 className="text-xl font-semibold">Categories</h2>
+                    <p className="mt-2 text-gray-600">Please Note you need to create a category before you add different products</p>
+                    <form onSubmit={AddCategorySubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="catName">
+                                Category Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="catName" value={catName} onChange={onCategoryChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Category
+                            </button>
+                            <br />
+                        </form>
+                        <h2 className="mt-10 text-xl font-semibold">Current Categories</h2>
+                        {cat?.map((category) => (
+                            <div key={category.CategoryID}>{category.CategoryName}</div>
+                        ))}
+                   
+                </div>
+                <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                    <h2 className="text-xl font-semibold">Delete Product</h2>
+                    <form onSubmit={deleteSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="deleteName">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="deleteName" value={deleteName} onChange={onDeleteChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Delete Product
+                            </button>
+                            <br />
+                        </form>
+                </div>
+                <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                    <h2 className="text-xl font-semibold">Products/Stock Numbers</h2>
+                    {products?.map((product) => (
+                            <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
+                        ))}
+                </div>
+                <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                    <h2 className="text-xl font-semibold">Modify Stock Quantity</h2>
+                    <form onSubmit={AddStockSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="stockName">
+                                Product Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="stockName" value={stockName} onChange={onStockChange} required />
+                            <br />
+                            <br />
+
+                            <label htmlFor="stock">
+                                Add # of stock? <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="stock" value={stock} onChange={onStockChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Stock
+                            </button>
+                            <br />
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+--------------------
+<div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
             <a href="../">back</a>
             <div className="mb-5 text-center">
                 <h1 className="text-4xl font-extrabold leading-9 tracking-tight ">Dashboard</h1>
@@ -339,8 +620,4 @@ const Dashboard: NextPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    );
-};
-
-export default Dashboard;
+        </div>*/
