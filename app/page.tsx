@@ -5,13 +5,14 @@ import { PrismaClient } from '@prisma/client'
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
 import toast from "react-hot-toast";
+import Popup from './components/Popup'
 const prisma = new PrismaClient()
 
 var cart:Products[] = []
 import axios from "axios";
 
 var inc:number = 0
-
+let selectedProduct: Products | null = null
 export default function Home() {
   const {user} = userStore();
   const{signOut} = userStore()
@@ -21,6 +22,8 @@ export default function Home() {
   //display all products on main page
   const[products, setProducts] = useState<Products[]>()
   var total:number = 0
+
+
 
   useEffect(()=>{
     axios
@@ -37,8 +40,17 @@ export default function Home() {
     return null
   }
 */
+
   //when product is clicked it gets added to cart in database
   const addToCart = async (p:Products) =>{
+    //return early if stock Quantity is 0
+    setButtonPopup(true)
+    if (p.StockQuantity==0) {
+      selectedProduct=null
+      return;
+    }
+    selectedProduct= p
+    console.log(selectedProduct)
     var length = cart.push(p)
     //let dateTime = new Date() //time created
     await axios.post('api/checkout', {
@@ -60,6 +72,8 @@ export default function Home() {
         toast("user added!")
       }) 
     console.log(inc)
+
+
   };
 
 
@@ -80,7 +94,7 @@ export default function Home() {
   }else{
     isManager=true
   }
-//console.log(manager)
+const[buttonPopup, setButtonPopup] = useState(false)
   return(
     /*
     <div>
@@ -92,6 +106,13 @@ export default function Home() {
     <div>{user}</div>
     */
     <div className="relative isolate px-6 pt-14 lg:px-8">
+      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+        {selectedProduct!=null?
+        <h3>{selectedProduct.ProductName} added to cart</h3>
+        :
+        <h3>No Stock</h3>
+    } 
+      </Popup>
       <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
       <div className='flex justify-between'> 
             {(user==0)? //check if user is signed in 
@@ -116,9 +137,10 @@ export default function Home() {
                   src={product.ProductDesc}
                   //alt={product.imageAlt}
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  onClick={()=>{addToCart(product)}}
+                  onClick={()=>{addToCart(product)}}             
                 />
               </div>
+              
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
@@ -128,9 +150,11 @@ export default function Home() {
                 <p className="text-sm font-medium text-gray-900">$ {product.Price}</p>
               </div>
             </div>
+            
           ))}
         </div>
       </div>
+      
   </div>
   
   )
