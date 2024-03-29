@@ -16,7 +16,6 @@ let selectedProduct: Products | null = null
 export default function Home() {
   const {user} = userStore();
   const{signOut} = userStore()
-
   const[isToggled, setIsToggled] = useState(false) //toggle between log in and sign out
   
   //display all products on main page
@@ -65,8 +64,10 @@ export default function Home() {
         toast.error("something went wrong")
     })
 
-    //subtracts one from product quantity
-    await axios.patch(`api/products?StockQuantity=${--p.StockQuantity}&ProductID=${p.ProductID}`)
+if(p.StockQuantity<=5){
+  console.log("stock was updated")
+}
+    await axios.patch(`api/products?StockQuantity=${p.StockQuantity}&ProductID=${p.ProductID}`)
       .then(() => {
         console.log(p.StockQuantity)
         toast("user added!")
@@ -131,6 +132,7 @@ const[buttonPopup, setButtonPopup] = useState(false)
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products?.map((product) => (
+            
             <div key={product.ProductID} className="group relative">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                 <img
@@ -144,7 +146,7 @@ const[buttonPopup, setButtonPopup] = useState(false)
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                      {product.ProductName}         
+                      {product.ProductName}    
                   </h3>
                 </div>
                 <p className="text-sm font-medium text-gray-900">$ {product.Price}</p>

@@ -162,9 +162,9 @@ export default function CheckoutPage(){
     products?.map((product)=>{
         total = total+ Number(product.TotalPrice)
     })
+
    
     return (
-      
         <div className="relative isolate px-6 pt-14 lg:px-8">
           <div className="">
             <a href="../">back</a>
@@ -211,7 +211,6 @@ export default function CheckoutPage(){
                     </ul>
                   </div>
                 </div>
-          
                 {(noItems)?
                   <div>You have no Items in cart</div>:
                 <div>
@@ -222,10 +221,8 @@ export default function CheckoutPage(){
                   onClick={() =>{addOrder()}}>
                           Checkout
                 </button>
-              </div>}
-          </div>
-
-                    
+              </div>}   
+          </div>            
     );
     
 }

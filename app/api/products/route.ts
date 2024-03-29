@@ -35,7 +35,7 @@ export async function PATCH(req: NextRequest){
 
   const result = await prisma.$executeRaw`
   UPDATE product
-  SET StockQuantity = ${Number(StockQuantity)}
+  SET StockQuantity = ${Number(StockQuantity)-1}
   WHERE ProductID = ${ProductID}
   `;
 
@@ -45,6 +45,10 @@ export async function PATCH(req: NextRequest){
 export async function DELETE(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const ProductName = searchParams.get('ProductName');
-  const affected = await prisma.$executeRaw`DELETE FROM product WHERE ProductName=${ProductName}`
+  //const affected = await prisma.$executeRaw`DELETE FROM product WHERE ProductName=${ProductName}`
+  const affected = await prisma.$executeRaw`
+  UPDATE product
+  SET isDelete = ${1}
+  WHERE ProductName = ${ProductName}`
   return new Response(JSON.stringify(affected));
 }

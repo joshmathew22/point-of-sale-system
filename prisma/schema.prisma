@@ -108,6 +108,7 @@ model product {
   StockQuantity   Int
   ExpirationDate  DateTime       @db.Date
   NutritionValues String         @db.VarChar(255)
+  isDelete        Int            @db.TinyInt
   inventory       inventory[]
   listing         listing[]
   orderitem       orderitem[]
