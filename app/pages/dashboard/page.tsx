@@ -202,7 +202,7 @@ const Dashboard: NextPage = () => {
         }})
         .catch((err) => console.log(err));
     },[restock]);
-    //console.log(restock)
+    console.log(restock)
     return (
         
         <div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
