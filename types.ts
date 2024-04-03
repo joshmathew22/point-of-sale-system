@@ -63,3 +63,7 @@ export interface restockItem{
     ProductID: number,
     restockMSG: boolean
 }
+
+export interface discount{
+    DiscountApply: boolean
+}

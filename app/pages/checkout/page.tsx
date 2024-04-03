@@ -4,7 +4,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 //import { cart } from "@/app/page";
-import { Checkout, Products } from "@/types";
+import { Checkout, Products,discount } from "@/types";
 import { userStore } from "../store";
 import toast from "react-hot-toast";
 
@@ -163,7 +163,18 @@ export default function CheckoutPage(){
         total = total+ Number(product.TotalPrice)
     })
 
-   
+    const[discount, setDiscount] = useState<discount[]>()
+    useEffect(()=>{
+        axios
+        .get<discount[]>('../api/discount')
+        .then(response =>{
+            if(response.data){
+            setDiscount(response.data)
+  
+        }})
+        .catch((err) => console.log(err));
+    },[discount]);
+
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8">
           <div className="">
@@ -214,7 +225,16 @@ export default function CheckoutPage(){
                 {(noItems)?
                   <div>You have no Items in cart</div>:
                 <div>
-                <p className="mt-8">total Price: {total}</p>
+
+            {(discount && discount[0].DiscountApply==true)? //check if user is signed in 
+              <div>
+                <p className="mt-8">Congrats your order was over 100 dollars, coupon applied!</p>
+                <p className="mt-1">Price without discount: {total}</p>
+                <p className="mt-1">Final Price: (20 percent off): {total*.8}</p>
+              </div>
+              : 
+              <p className="mt-8">total Price (no discount): {total}</p>
+            }
                 <button  
                   type = "submit"
                   className="bg-black text-white font-bold py-2 px-4 rounded"
