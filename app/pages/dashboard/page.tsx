@@ -183,7 +183,7 @@ const Dashboard: NextPage = () => {
           }
           
         console.log(Number(stock)+StockQuantity,stockID)
-        await axios.patch(`../api/products?StockQuantity=${Number(stock)+StockQuantity}&ProductID=${stockID}`)
+        await axios.patch(`../api/products?StockQuantity=${Number(stock)+StockQuantity+1}&ProductID=${stockID}`)
         .then(() => {
             //console.log(p.StockQuantity)
             toast("user added!")

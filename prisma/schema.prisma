@@ -27,6 +27,10 @@ model discount {
   @@index([AppliesToID], map: "Applies To")
 }
 
+model discountapply {
+  DiscountApply Int @id @default(0) @db.TinyInt
+}
+
 model inventory {
   InventoryID       Int      @id
   ProductID         Int
@@ -60,6 +64,12 @@ model listing {
 
   @@index([ProductID], map: "listing_ibfk_1")
   @@index([SuppliedBy], map: "listing_ibfk_2_idx")
+}
+
+model manager {
+  ManagerID Int    @id
+  UserID    Int?   @unique(map: "UserID")
+  users     users? @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "is")
 }
 
 model orderitem {
@@ -108,7 +118,7 @@ model product {
   StockQuantity   Int
   ExpirationDate  DateTime       @db.Date
   NutritionValues String         @db.VarChar(255)
-  isDelete        Int            @db.TinyInt
+  restockMSG      Int            @default(0) @db.TinyInt
   inventory       inventory[]
   listing         listing[]
   orderitem       orderitem[]
@@ -158,7 +168,7 @@ model review {
   ReviewText String   @db.VarChar(255)
   ReviewDate DateTime @db.Date
   Rating     String?  @db.VarChar(45)
-  users      users    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_1")
+  users      users    @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "review")
   product    product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "review_ibfk_2")
 
   @@index([ProductID], map: "review_ibfk_2")
@@ -186,11 +196,11 @@ model shoppingcart {
   ProductID  Int
   Quantity   Int
   TotalPrice Decimal @db.Decimal(10, 2)
-  users      users   @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_1")
+  users      users   @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "belongs to")
   product    product @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "shoppingcart_ibfk_2")
 
-  @@index([ProductID], map: "contains_idx")
   @@index([UserID], map: "belongs to_idx")
+  @@index([ProductID], map: "contains_idx")
 }
 
 model supplier {
@@ -232,10 +242,4 @@ model users {
   recipe       recipe[]
   review       review[]
   shoppingcart shoppingcart[]
-}
-
-model manager {
-  ManagerID Int    @id
-  UserID    Int?   @unique(map: "UserID")
-  users     users? @relation(fields: [UserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "is")
 }

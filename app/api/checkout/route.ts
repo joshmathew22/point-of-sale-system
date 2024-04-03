@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     //console.log(user)
     const result = await prisma.$executeRaw`
     INSERT INTO shoppingcart(CartID,UserID,ProductID,Quantity,TotalPrice)
-    VAlUES(${data.CartID},${data.UserID},${data.ProductID},${data.Quantity},${data.TotalPrice} );`;
+    VAlUES(${data.CartID},${data.UserID},${data.ProductID},${data.Quantity},${data.TotalPrice});`;
   
     return new Response(JSON.stringify(result));
 }
