@@ -188,7 +188,8 @@ const Dashboard: NextPage = () => {
             //console.log(p.StockQuantity)
             toast("user added!")
         }) 
-        router.refresh();
+        //router.refresh();
+        window.location.href = "/pages/dashboard";
     }
 
 
