@@ -55,6 +55,7 @@ const Dashboard: NextPage = () => {
     const[restock, setStock] = useState<restockItem[]>()
     const[update, setUpdate] = useState(0)
     const router = useRouter();
+
     useEffect(()=>{
         axios
         .get<restockItem[]>('../api/restock')
@@ -66,6 +67,7 @@ const Dashboard: NextPage = () => {
         .catch((err) => console.log(err));
     },[restock]);
     console.log(restock)
+
     //get all products from database
     useEffect(()=>{
         axios
@@ -204,6 +206,7 @@ const Dashboard: NextPage = () => {
             toast("user added!")
         }) 
         //router.refresh();
+        setUpdate(update+1)
         window.location.href = "/pages/dashboard";
     }
 
