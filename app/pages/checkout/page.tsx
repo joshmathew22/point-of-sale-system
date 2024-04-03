@@ -174,6 +174,7 @@ export default function CheckoutPage(){
         }})
         .catch((err) => console.log(err));
     },[discount]);
+    console.log(discount)
 
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8">
