@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Category, Products } from "@/types";
+import { Category, Products,restockItem } from "@/types";
 
 const addProductsForm = {
     name:"",
@@ -189,6 +189,20 @@ const Dashboard: NextPage = () => {
             toast("user added!")
         }) 
     }
+
+
+    const[restock, setStock] = useState<restockItem[]>()
+    useEffect(()=>{
+        axios
+        .get<restockItem[]>('../api/restock')
+        .then(response =>{
+            if(response.data){
+            setStock(response.data)
+            //console.log(restock)
+        }})
+        .catch((err) => console.log(err));
+    },[restock]);
+    //console.log(restock)
     return (
         
         <div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
@@ -324,6 +338,17 @@ const Dashboard: NextPage = () => {
                             </button>
                             <br />
                         </form>
+            </div>
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Admin Restock Warnings</h2>
+                {restock?.map((category) => (
+                    (category.restockMSG==true) ? 
+                        <div key={category.ProductID}>{category.ProductName} needs to be restocked</div>
+                    :   
+                        null
+                    ))}
+
+        
             </div>
         </div>
     </div>

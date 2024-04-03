@@ -57,3 +57,9 @@ export interface OrderItem{
     ProductName: string,
     ProductDesc: string
 }
+
+export interface restockItem{
+    ProductName: string,
+    ProductID: number,
+    restockMSG: boolean
+}
