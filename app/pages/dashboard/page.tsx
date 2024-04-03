@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Category, Products,restockItem } from "@/types";
-
+import { useRouter } from "next/navigation";
 const addProductsForm = {
     name:"",
     category:"",
@@ -188,11 +188,12 @@ const Dashboard: NextPage = () => {
             //console.log(p.StockQuantity)
             toast("user added!")
         }) 
-        window.location.reload();
+        router.refresh();
     }
 
 
     const[restock, setStock] = useState<restockItem[]>()
+    const router = useRouter();
     useEffect(()=>{
         axios
         .get<restockItem[]>('../api/restock')
