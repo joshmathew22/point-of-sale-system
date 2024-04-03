@@ -188,6 +188,7 @@ const Dashboard: NextPage = () => {
             //console.log(p.StockQuantity)
             toast("user added!")
         }) 
+        window.location.reload();
     }
 
 
