@@ -65,7 +65,7 @@ const Dashboard: NextPage = () => {
             //console.log(restock)
         }})
         .catch((err) => console.log(err));
-    },[restock]);
+    },[restock,update]);
     console.log(restock)
 
     //get all products from database
