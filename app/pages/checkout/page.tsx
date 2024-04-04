@@ -174,7 +174,9 @@ export default function CheckoutPage(){
         }})
         .catch((err) => console.log(err));
     },[discount]);
-    console.log(discount)
+    //console.log(discount)
+
+    
 
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -227,7 +229,7 @@ export default function CheckoutPage(){
                   <div>You have no Items in cart</div>:
                 <div>
 
-            {(discount && discount[0].DiscountApply==true)? //check if user is signed in 
+            {( total>100)? //discount
               <div>
                 <p className="mt-8">Congrats your order was over 100 dollars, coupon applied!</p>
                 <p className="mt-1">Price without discount: {total}</p>
