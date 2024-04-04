@@ -8,3 +8,15 @@ export async function GET(req: NextRequest) {
     FROM discountapply`
     return new Response(JSON.stringify(discount))
   }
+
+  export async function PATCH(req: NextRequest){
+    const searchParams = req.nextUrl.searchParams;
+    const restockMSG = searchParams.get('restockMSG');
+  
+    const result = await prisma.$executeRaw`
+    UPDATE product
+    SET restockMSG = ${(Number(restockMSG))}
+    `;
+  
+    return new Response(JSON.stringify(result))
+  }

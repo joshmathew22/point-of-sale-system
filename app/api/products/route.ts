@@ -48,7 +48,7 @@ export async function DELETE(req: NextRequest) {
   //const affected = await prisma.$executeRaw`DELETE FROM product WHERE ProductName=${ProductName}`
   const affected = await prisma.$executeRaw`
   UPDATE product
-  SET isDelete = ${1}
+  SET isDeleted = ${1}
   WHERE ProductName = ${ProductName}`
   return new Response(JSON.stringify(affected));
 }

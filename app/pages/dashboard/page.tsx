@@ -175,12 +175,16 @@ const Dashboard: NextPage = () => {
     }
 
     const deleteSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
         axios.delete(`../api/products?ProductName=${deleteName}`)
           .then(() => {
               toast.success('Removed track from album')
+              setDeleteFormData(deleteForm)
           })
           .catch(Error => console.error(Error))
     }
+
+    //modify restockMSG
     products?.forEach((product) => {
         if(product.StockQuantity>3){
             axios.patch(`../api/restock?restockMSG=${0}`)
@@ -216,6 +220,7 @@ const Dashboard: NextPage = () => {
         await axios.patch(`../api/products?StockQuantity=${Number(stock)+StockQuantity+1}&ProductID=${stockID}`)
         .then(() => {
             //console.log(p.StockQuantity)
+            setStockFormData(addStockForm)
             toast("user added!")
         }) 
         //router.refresh();

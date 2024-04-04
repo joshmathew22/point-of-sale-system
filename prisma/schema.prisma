@@ -32,18 +32,15 @@ model discountapply {
 }
 
 model inventory {
-  InventoryID       Int      @id
-  ProductID         Int
+  ProductID         Int      @id
   SupplierID        Int
   Quantity          Int
   DateStocked       DateTime @db.Date
   ExpiryDate        DateTime @db.Date
   CostPrice         Decimal  @db.Decimal(10, 2)
-  Manufacturer      String   @db.VarChar(255)
-  BatchNumber       String   @db.VarChar(50)
-  AdditionalDetails String   @db.Text
-  product           product  @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_1")
-  supplier          supplier @relation(fields: [SupplierID], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction, map: "inventory_ibfk_2")
+  Manufacturer      String?  @db.VarChar(255)
+  BatchNumber       String?  @db.VarChar(50)
+  AdditionalDetails String?  @db.Text
 
   @@index([ProductID], map: "inventory_ibfk_1")
   @@index([SupplierID], map: "inventory_ibfk_2")
@@ -119,7 +116,7 @@ model product {
   ExpirationDate  DateTime       @db.Date
   NutritionValues String         @db.VarChar(255)
   restockMSG      Int            @default(0) @db.TinyInt
-  inventory       inventory[]
+  isDeleted       Int?           @default(0) @db.TinyInt
   listing         listing[]
   orderitem       orderitem[]
   category        category       @relation(fields: [CategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "belong")
@@ -204,15 +201,14 @@ model shoppingcart {
 }
 
 model supplier {
-  SupplierID    Int         @id
-  SupplierName  String      @db.VarChar(100)
-  ContactPerson String      @db.VarChar(100)
-  ContactNumber String      @db.VarChar(10)
-  Email         String      @db.VarChar(100)
-  Address       String      @db.VarChar(255)
-  City          String      @db.VarChar(45)
-  PaymentTerms  String      @db.VarChar(50)
-  inventory     inventory[]
+  SupplierID    Int        @id
+  SupplierName  String     @db.VarChar(100)
+  ContactPerson String     @db.VarChar(100)
+  ContactNumber String     @db.VarChar(10)
+  Email         String     @db.VarChar(100)
+  Address       String     @db.VarChar(255)
+  City          String     @db.VarChar(45)
+  PaymentTerms  String     @db.VarChar(50)
   listing       listing[]
   supplies      supplies[]
 }

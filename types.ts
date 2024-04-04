@@ -7,6 +7,7 @@ export interface Products{
     StockQuantity: number;
     ExpirationDate: Date;
     NutritionValues: string;
+    isDeleted: boolean;
 }
 
 export interface Users{
