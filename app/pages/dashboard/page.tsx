@@ -62,11 +62,12 @@ const Dashboard: NextPage = () => {
         .then(response =>{
             if(response.data){
             setStock(response.data)
+            
             //console.log(restock)
         }})
         .catch((err) => console.log(err));
     },[restock,update]);
-    console.log(restock)
+    //console.log(restock)
 
     //get all products from database
     useEffect(()=>{
@@ -157,6 +158,7 @@ const Dashboard: NextPage = () => {
     }
 
     const AddCategorySubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        
         e.preventDefault();
         CID = generateRandomId(8);
         axios.post('../api/category', {
@@ -179,7 +181,7 @@ const Dashboard: NextPage = () => {
           })
           .catch(Error => console.error(Error))
     }
-    
+    console.log(products)
     const AddStockSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         var StockQuantity = -1
@@ -190,8 +192,10 @@ const Dashboard: NextPage = () => {
                 StockQuantity = product.StockQuantity
 
             }
+            
+            
         });
-        
+       
 
         if (stockID === -1) {
             console.log("item not found");
