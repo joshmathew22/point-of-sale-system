@@ -337,7 +337,10 @@ const Dashboard: NextPage = () => {
             <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
                 <h2 className="text-xl font-semibold">Products/Stock Numbers</h2>
                 {products?.map((product) => (
+                            (product.isDeleted==false)?(
                             <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
+                            )
+                            :null
                         ))}
             </div>
 
