@@ -181,7 +181,16 @@ const Dashboard: NextPage = () => {
           })
           .catch(Error => console.error(Error))
     }
-    console.log(products)
+    products?.forEach((product) => {
+        if(product.StockQuantity>3){
+            axios.patch(`../api/restock?restockMSG=${0}`)
+        }
+        else{
+            axios.patch(`../api/restock?restockMSG=${1}}`)
+        }
+    })
+
+    
     const AddStockSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         var StockQuantity = -1
@@ -211,7 +220,7 @@ const Dashboard: NextPage = () => {
         }) 
         //router.refresh();
         setUpdate(update+1)
-        window.location.href = "/pages/dashboard";
+        //window.location.href = "/pages/dashboard";
     }
 
 
