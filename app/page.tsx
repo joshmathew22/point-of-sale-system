@@ -120,10 +120,10 @@ const[buttonPopup, setButtonPopup] = useState(false)
         <div className="relative isolate px-6 pt-14 lg:px-8">
           <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
             {selectedProduct!=null?
-            <h3>{selectedProduct.ProductName} added to cart</h3>
-            :
-            <h3>No Stock</h3>
-        } 
+              <h3>{selectedProduct.ProductName} added to cart</h3>
+              :
+              <h3>No Stock</h3>
+             } 
           </Popup>
           <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
           <div className='flex justify-between'> 
@@ -148,9 +148,8 @@ const[buttonPopup, setButtonPopup] = useState(false)
 
 
 
-
       
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <div className="mx-1 max-w-2xl px-4 py-16 sm:px-6 sm:py-10 lg:max-w-7xl ">
   <h2 className="text-2xl font-bold tracking-tight text-gray-900"></h2>
 
   {cat?.map((category) => (
