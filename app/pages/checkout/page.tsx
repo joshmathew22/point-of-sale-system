@@ -7,7 +7,7 @@ import axios from "axios";
 import { Checkout, Products,discount } from "@/types";
 import { userStore } from "../store";
 import toast from "react-hot-toast";
-
+import Popup from "@/app/components/Popup";
 function generateRandomUserId(length: number): number {
   const min = Math.pow(10, length - 1); // Minimum value based on the length
   const max = Math.pow(10, length) - 1; // Maximum value based on the length
@@ -28,7 +28,8 @@ export default function CheckoutPage(){
     var noItems:boolean
     noItems=false
     //getting products from cart in database
-    
+    const[buttonPopup, setButtonPopup] = useState(false)
+
     useEffect(()=>{
         axios
         .get<Checkout[]>(`../api/checkout?UserID=${user}`)
@@ -84,6 +85,7 @@ export default function CheckoutPage(){
     
     //console.log(OID)
     const addOrder = async(price:number)=>{
+      setButtonPopup(true)
       console.log(products)
       console.log(p)
       const date = new Date();
@@ -156,7 +158,7 @@ export default function CheckoutPage(){
           .catch(Error => console.error(Error))
         
       })
-      window.location.href = "../";
+      //window.location.href = "../";
     }
 
     products?.map((product)=>{
@@ -180,6 +182,13 @@ export default function CheckoutPage(){
 
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8">
+          <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+            {products!=null?
+              <h3>Sucesfully Added Order!</h3>
+              :
+              <h3>No items in cart. Please add items to cart.</h3>
+           } 
+          </Popup>
           <div className="">
             <a href="../">back</a>
             <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Checkout</div>
@@ -236,7 +245,7 @@ export default function CheckoutPage(){
                 <p className="mt-1">Final Price: (20 percent off): {total*.8}</p>
               </div>
               : 
-              <p className="mt-8">Total Price (no discount): {total}</p>
+              <p className="mt-8">Total Price: {total}</p>
             }
                 <button  
                   type = "submit"
