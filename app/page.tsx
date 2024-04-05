@@ -148,6 +148,9 @@ const[buttonPopup, setButtonPopup] = useState(false)
                   <h3 className="text-sm text-gray-700">
                       {product.ProductName}    
                   </h3>
+                  <h3 className="text-xs text-gray-300">   
+                      stock: {product.StockQuantity}
+                  </h3>
                 </div>
                 <p className="text-sm font-medium text-gray-900">$ {product.Price}</p>
               </div>
