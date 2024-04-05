@@ -83,7 +83,7 @@ export default function CheckoutPage(){
     const userIdLength = 8; // You can adjust the length of the user ID as needed
     
     //console.log(OID)
-    const addOrder = async()=>{
+    const addOrder = async(price:number)=>{
       console.log(products)
       console.log(p)
       const date = new Date();
@@ -106,8 +106,8 @@ export default function CheckoutPage(){
           UserID: user,
           OrderDate:dateWithoutTime,
           TotalAmount:products?.length,
-          OrderStatus:"Placed"
-
+          OrderStatus:"Placed",
+          TotalPrice: price
       }) .then(()=>{
           toast("user added!")
           console.log("order id:",OID)
@@ -241,7 +241,7 @@ export default function CheckoutPage(){
                 <button  
                   type = "submit"
                   className="bg-black text-white font-bold py-2 px-4 rounded"
-                  onClick={() =>{addOrder()}}>
+                  onClick={() =>{addOrder(total)}}>
                           Checkout
                 </button>
               </div>}   

@@ -7,7 +7,8 @@ interface reqFortmat{
     UserID:number,
     OrderDate: Date
     TotalAmount: number
-    OrderStatus:string
+    OrderStatus:string,
+    TotalPrice: number
 }
 
 export async function GET(req: NextRequest) {
@@ -22,8 +23,8 @@ export async function POST(req: Request) {
     const data: reqFortmat = await req.json();
     
     const result = await prisma.$executeRaw`
-    INSERT INTO orders(OrderID,UserID,OrderDate,TotalAmount,OrderStatus)
-    VAlUES(${data.OrderID},${data.UserID},${data.OrderDate},${data.TotalAmount},${data.OrderStatus});`;
+    INSERT INTO orders(OrderID,UserID,OrderDate,TotalAmount,OrderStatus,TotalPrice)
+    VAlUES(${data.OrderID},${data.UserID},${data.OrderDate},${data.TotalAmount},${data.OrderStatus},${data.TotalPrice});`;
   
     //console.log(result)
     return new Response(JSON.stringify(result));

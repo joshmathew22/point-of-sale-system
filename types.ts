@@ -46,7 +46,8 @@ export interface Order{
     UserID:number,
     OrderDate: Date
     TotalAmount: number
-    OrderStatus:string
+    OrderStatus:string,
+    TotalPrice: number
 }
 
 export interface OrderItem{

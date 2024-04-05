@@ -88,6 +88,7 @@ model orders {
   OrderDate   DateTime    @db.Date
   TotalAmount Decimal     @db.Decimal(10, 2)
   OrderStatus String      @db.VarChar(255)
+  TotalPrice  Float       @db.Float
   discount    discount[]
   orderitem   orderitem[]
   payment     payment[]
