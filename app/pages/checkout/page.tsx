@@ -236,7 +236,7 @@ export default function CheckoutPage(){
                 <p className="mt-1">Final Price: (20 percent off): {total*.8}</p>
               </div>
               : 
-              <p className="mt-8">total Price (no discount): {total}</p>
+              <p className="mt-8">Total Price (no discount): {total}</p>
             }
                 <button  
                   type = "submit"

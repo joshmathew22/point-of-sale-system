@@ -106,27 +106,39 @@ const[buttonPopup, setButtonPopup] = useState(false)
     </div>
     <div>{user}</div>
     */
-    <div className="relative isolate px-6 pt-14 lg:px-8">
-      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-        {selectedProduct!=null?
-        <h3>{selectedProduct.ProductName} added to cart</h3>
-        :
-        <h3>No Stock</h3>
-    } 
-      </Popup>
-      <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
-      <div className='flex justify-between'> 
-            {(user==0)? //check if user is signed in 
-              <a href="pages/login">Log in</a>:<button onClick={() =>signOut(0)}>Sign Out</button>
-            }
-            {(isManager)?
-            <a href="pages/dashboard">Dashboard</a>:null
-            }
-            <a href="pages/checkout">Checkout</a>
+        <div className="relative isolate px-6 pt-14 lg:px-8">
+          <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+            {selectedProduct!=null?
+            <h3>{selectedProduct.ProductName} added to cart</h3>
+            :
+            <h3>No Stock</h3>
+        } 
+          </Popup>
+          <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
+          <div className='flex justify-between'> 
+                {(user==0)? //check if user is signed in 
+                  <a href="pages/login">Log in</a>:<button onClick={() =>signOut(0)}>Sign Out</button>
+                }
+                {(isManager)?
+                <a href="pages/dashboard">Dashboard</a>:null
+                }
+                <a href="pages/checkout">Checkout</a>
+          </div>
+          <div className="flex ">
+          <a href="pages/orders">Orders</a>
+          </div>
+          
+
+      <div className="bg-black px-6 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 bg-opacity-75 rounded-lg">
+        <div className="flex flex-col items-center gap-y-2">
+          <p className="text-sm leading-6 text-white text-center">Spend over 100$ get 20% off!</p>
+        </div>
       </div>
-      <div className="flex ">
-       <a href="pages/orders">Orders</a>
-      </div>
+
+
+
+
+      
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900"></h2>
 
