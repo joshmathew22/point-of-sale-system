@@ -53,8 +53,8 @@ const Dashboard: NextPage = () => {
     const[products, setProducts] = useState<Products[]>()
 
     const[restock, setStock] = useState<restockItem[]>()
-    const[update, setUpdate] = useState(0)
-    const router = useRouter();
+    //const[update, setUpdate] = useState(0)
+    //const router = useRouter();
 
     useEffect(()=>{
         axios
@@ -66,7 +66,7 @@ const Dashboard: NextPage = () => {
             //console.log(restock)
         }})
         .catch((err) => console.log(err));
-    },[restock,update]);
+    },[restock]);
     //console.log(restock)
 
     //get all products from database
@@ -124,8 +124,7 @@ const Dashboard: NextPage = () => {
     };
 
     const AddProductSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
-        e.preventDefault();
-        
+        e.preventDefault();   
         var catID:number
         cat?.forEach((element)=>{
             if(element.CategoryName ==category){
@@ -158,7 +157,6 @@ const Dashboard: NextPage = () => {
     }
 
     const AddCategorySubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
-        
         e.preventDefault();
         CID = generateRandomId(8);
         axios.post('../api/category', {
@@ -208,8 +206,6 @@ const Dashboard: NextPage = () => {
             
             
         });
-       
-
         if (stockID === -1) {
             console.log("item not found");
             // Exit function or return appropriate JSX
@@ -224,7 +220,7 @@ const Dashboard: NextPage = () => {
             toast("user added!")
         }) 
         //router.refresh();
-        setUpdate(update+1)
+        //setUpdate(update+1)
         //window.location.href = "/pages/dashboard";
     }
 
@@ -309,10 +305,7 @@ const Dashboard: NextPage = () => {
                             </button>
                             <br />
                         </form>
-                        <h2 className="mt-10 text-xl font-semibold">Current Categories</h2>
-                        {cat?.map((category) => (
-                            <div key={category.CategoryID}>{category.CategoryName}</div>
-                        ))}
+                        
      
             </div>
 
@@ -342,6 +335,10 @@ const Dashboard: NextPage = () => {
                             )
                             :null
                         ))}
+                <h2 className="text-xl font-semibold">Current Categories</h2>
+                {cat?.map((category) => (
+                    <div key={category.CategoryID}>{category.CategoryName}</div>
+                ))}
             </div>
 
             <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">

@@ -1,13 +1,13 @@
 "use client"
 
-import { Products, Users, Manager } from "@/types";
+import { Products, Users, Manager, Category} from "@/types";
 import { PrismaClient } from '@prisma/client'
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
 import toast from "react-hot-toast";
 import Popup from './components/Popup'
 const prisma = new PrismaClient()
-
+import React from 'react';
 var cart:Products[] = []
 import axios from "axios";
 
@@ -39,6 +39,17 @@ export default function Home() {
     return null
   }
 */
+const[cat, setCategory] = useState<Category[]>()
+    //get all categories from database
+    useEffect(()=>{
+        axios
+        .get<Category[]>(`../api/category`)
+        .then(response =>{
+            if(response.data){
+            setCategory(response.data)
+        }})
+        .catch((err) => console.log(err));
+    },[cat]);
 
   //when product is clicked it gets added to cart in database
   const addToCart = async (p:Products) =>{
@@ -139,42 +150,42 @@ const[buttonPopup, setButtonPopup] = useState(false)
 
 
       
-    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900"></h2>
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+  <h2 className="text-2xl font-bold tracking-tight text-gray-900"></h2>
 
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {products?.map((product) => (
-            (product.isDeleted==false)?(
-            <div key={product.ProductID} className="group relative">
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img
-                  src={product.ProductDesc}
-                  //alt={product.imageAlt}
-                  className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  onClick={()=>{addToCart(product)}}             
-                />
-              </div>
-              
-              <div className="mt-4 flex justify-between">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                      {product.ProductName}    
-                  </h3>
-                  <h3 className="text-xs text-gray-300">   
-                      stock: {product.StockQuantity}
-                  </h3>
-                </div>
-                <p className="text-sm font-medium text-gray-900">$ {product.Price}</p>
-              </div>
+  {cat?.map((category) => (
+    <div key={category.CategoryID} className="mt-6">
+      <h2 className="mb-3 text-2xl font-semi-bold  tracking-tight text-gray-900">{category.CategoryName}</h2>
+      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        {products?.filter(product => product.CategoryID === category.CategoryID && !product.isDeleted).map((product) => (
+          <div key={product.ProductID} className="group relative">
+            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+              <img
+                src={product.ProductDesc}
+                //alt={product.imageAlt}
+                className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                onClick={() => { addToCart(product) }}             
+              />
             </div>
-            )
-            :
-            null
-          ))}
-        </div>
+            
+            <div className="mt-4 flex justify-between">
+              <div>
+                <h3 className="text-sm text-gray-700">
+                  {product.ProductName}    
+                </h3>
+                <h3 className="text-xs text-gray-300">   
+                  stock: {product.StockQuantity}
+                </h3>
+              </div>
+              <p className="text-sm font-medium text-gray-900">$ {product.Price}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      
-  </div>
+    </div>
+  ))}
+</div>
+</div>
   
   )
 }
