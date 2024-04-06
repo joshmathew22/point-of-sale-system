@@ -79,3 +79,14 @@ export interface userReport{
     TotalPrice: number,
     QuantityTotal: number
 }
+
+export interface productReport{
+    ProductID: number,
+    ProductName: string,
+    CategoryName: string,
+    Price: number,
+    StockQuantity: number,
+    AmountSoldLifeTime: number,
+    ExpirationDate: Date,
+    ProductsValue: number
+}

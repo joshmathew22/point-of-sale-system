@@ -2,16 +2,20 @@
 import Sidebar from "@/app/components/sidebar";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { userReport, Users } from "@/types";
+import { productReport, userReport, Users, Category} from "@/types";
 import axios from "axios";
 
 const addUserReportForm = {
     email:""
 }
+
+const addProductReportForm = {
+    category:""
+}
 const Reports: NextPage = () => {
 
     const[userReport, setUserReport] = useState<userReport[]>()
-    
+    const[productReport, setProductReport] = useState<productReport[]>()
   //console.log(userReport)
  
   //console.log(userReport)
@@ -27,18 +31,18 @@ const Reports: NextPage = () => {
       .catch((err) => console.log(err));
   },[userReport]);
   */
-  const[users, setProducts] = useState<Users[]>()
+
+ //users
+  const[users, setUsers] = useState<Users[]>()
   useEffect(()=>{
     axios
       .get<Users[]>('../../api/users')
       .then(response =>{
         if(response.data){
-          setProducts(response.data)
+          setUsers(response.data)
       }})
       .catch((err) => console.log(err));
   },[users]);
-
-
 
   const[userReportData, setUserReportData]=useState(addUserReportForm)
   const{email} =userReportData
@@ -54,6 +58,38 @@ const Reports: NextPage = () => {
     try {
         const response = await axios.get<userReport[]>(`../../api/reportUser?email=${email}`);
         setUserReport(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+
+  }
+
+//products
+    const[cat, setCategory] = useState<Category[]>()
+    useEffect(()=>{
+        axios
+        .get<Category[]>(`../../api/category`)
+        .then(response =>{
+            if(response.data){
+            setCategory(response.data)
+        }})
+        .catch((err) => console.log(err));
+    },[cat]);
+
+  const[productReportData, setProductReportData]=useState(addProductReportForm)
+  const{category} =productReportData
+
+  const onProductReportChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
+    setProductReportData((prevState)=>({
+        ...prevState,
+        [e.target.id]: e.target.value
+   }));
+};
+  const productSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+    e.preventDefault();   
+    try {
+        const response = await axios.get<productReport[]>(`../../api/reportProduct?category=${category}`);
+        setProductReport(response.data);
     } catch (error) {
         console.error(error);
     }
@@ -150,8 +186,97 @@ const Reports: NextPage = () => {
                     :
                     null}
                     </div>
+                    
+                    <div className="relative overflow-x-auto">
+                        <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                            <h2 className="text-xl font-semibold">Product Report</h2>
+                            <form onSubmit={productSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                                        <label htmlFor="category">
+                                            Category<span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            id="category"
+                                            className="border-4 border-black rounded-lg w-full"
+                                            value={category}
+                                            onChange={onProductReportChange}
+                                            required
+                                        >
+                                            {cat?.map((category, index) => (
+                                                <option key={index} value={category.CategoryName}>{category.CategoryName}</option>
+                                            ))}
 
+                                            {/* Add more options as needed */}
+                                        </select>
+                                    
+                                        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                            Generate User Report
+                                        </button>
+                                        <br />
+                                    </form>
+
+                        </div>
+                    {productReport ?(
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">
+                                        ID
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Price
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Expiration Date
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Amount Sold
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Stock Quantity
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        ProductsValue
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {productReport?.map((report, index) => (
+                                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {report.ProductID}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.ProductName}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.Price}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {new Date(report.ExpirationDate).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.AmountSoldLifeTime}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.StockQuantity}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.ProductsValue}
+                                        </td>
+
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )
+                    :
+                    null}
+                    </div>
                  </div>
+                 
             </div>
         </div>
     )
