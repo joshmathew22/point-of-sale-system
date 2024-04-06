@@ -6,22 +6,22 @@ const Sidebar = () => {
     <h2 className="text-xl font-semibold mb-4">Navigation</h2>
     <ul className="space-y-2">
         <li>
-            <a href="../../" className="block text-blue-500 hover:text-blue-700">
+            <a href="../../" className="hover:text-gray-500">
                 Back to Home
             </a>
         </li>
         <li>
-            <a href="/pages/dashboard" className="block text-blue-500 hover:text-blue-700">
+            <a href="/pages/dashboard" className="hover:text-gray-500">
                 Dashboard
             </a>
         </li>
         <li>
-            <a href="/pages/dashboard/modify" className="block text-blue-500 hover:text-blue-700">
+            <a href="/pages/dashboard/modify" className="hover:text-gray-500">
                 Modify Data
             </a>
         </li>
         <li>
-            <a href="/pages/dashboard/reports" className="block text-blue-500 hover:text-blue-700">
+            <a href="/pages/dashboard/reports" className="hover:text-gray-500">
                 Report
             </a>
         </li>

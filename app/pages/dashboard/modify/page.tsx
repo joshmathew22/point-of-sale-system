@@ -94,10 +94,17 @@ const Modify: NextPage = () => {
         }})
         .catch((err) => console.log(err));
     },[cat]);
-    //console.log(cat)
+   //console.log(cat)
 
 
     const onProductChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        setFormData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+            //name: e.target.value
+        }));
+    };
+    const onProductCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
         setFormData((prevState)=>({
             ...prevState,
             [e.target.id]: e.target.value
@@ -133,6 +140,7 @@ const Modify: NextPage = () => {
                 CID = element.CategoryID
             }
         })
+        console.log(category)
         if(CID===-1){
             console.log("Category Doesnt Exist, Please create Category first")
             return
@@ -246,12 +254,25 @@ const Modify: NextPage = () => {
                             </label>
                             <input className="border-4 border-black rounded-lg w-full" type="text" id="name" value={name} onChange={onProductChange} required />
                         </div>
-                        <div className="w-full md:w-1/2 pl-4">
+                            <div className="w-full md:w-1/2 pl-4">
                             <label htmlFor="category">
                                 Product Category <span className="text-red-500">*</span>
                             </label>
-                            <input className="border-4 border-black rounded-lg w-full" type="text" id="category" value={category} onChange={onProductChange} required />
+                            <select
+                                id="category"
+                                className="border-4 border-black rounded-lg w-full"
+                                value={category}
+                                onChange={onProductCategoryChange}
+                                required
+                            >
+                                {cat?.map((categoryItem, index) => (
+                                    <option key={index} value={categoryItem.CategoryName}>{categoryItem.CategoryName}</option>
+                                ))}
+
+                                {/* Add more options as needed */}
+                            </select>
                         </div>
+
                         <div className="w-full md:w-1/2 pr-4">
                             <label htmlFor="img">
                                 Product Image <span className="text-red-500">*</span>
