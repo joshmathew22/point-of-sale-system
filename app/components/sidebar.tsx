@@ -12,7 +12,7 @@ const Sidebar = () => {
         </li>
         <li>
             <a href="/pages/dashboard" className="hover:text-gray-500">
-                Dashboard
+                Stock Numbers
             </a>
         </li>
         <li>

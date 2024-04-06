@@ -26,7 +26,8 @@ const Reports: NextPage = () => {
             <div className="flex-1 flex justify-center items-center">
                 <div className="relative isolate px-6 pt-14 lg:px-8 min-h-screen">
                     <div className="mb-5 text-center">
-                        <h1 className="text-4xl font-extrabold leading-9 tracking-tight">Reports</h1>
+                        <h1 className="text-4xl font-extrabold leading-9 tracking-tight">Dashboard</h1>
+                        <p className="mt-2 text-2xl">Reports</p>
                     </div>
                     <div className="relative overflow-x-auto">
                         <div>User Report</div>
