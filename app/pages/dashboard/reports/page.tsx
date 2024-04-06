@@ -2,7 +2,7 @@
 import Sidebar from "@/app/components/sidebar";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { userReport } from "@/types";
+import { userReport, Users } from "@/types";
 import axios from "axios";
 
 const addUserReportForm = {
@@ -27,11 +27,23 @@ const Reports: NextPage = () => {
       .catch((err) => console.log(err));
   },[userReport]);
   */
+  const[users, setProducts] = useState<Users[]>()
+  useEffect(()=>{
+    axios
+      .get<Users[]>('../../api/users')
+      .then(response =>{
+        if(response.data){
+          setProducts(response.data)
+      }})
+      .catch((err) => console.log(err));
+  },[users]);
+
+
 
   const[userReportData, setUserReportData]=useState(addUserReportForm)
   const{email} =userReportData
 
-  const onUserReportChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+  const onUserReportChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
     setUserReportData((prevState)=>({
         ...prevState,
         [e.target.id]: e.target.value
@@ -57,18 +69,25 @@ const Reports: NextPage = () => {
                         <p className="mt-2 text-2xl">Reports</p>
                     </div>
                     <div className="relative overflow-x-auto">
-                        <div>User Report</div>
-
                         <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
-                            <h2 className="text-xl font-semibold">Categories</h2>
+                            <h2 className="text-xl font-semibold">User Report</h2>
                             <form onSubmit={userSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
                                         <label htmlFor="email">
                                             Email<span className="text-red-500">*</span>
                                         </label>
-                                        <br />
-                                        <input className="border-4 border-black rounded-lg" type="text" id="email" value={email} onChange={onUserReportChange} required />
-                                        <br />
-                                        <br />
+                                        <select
+                                            id="email"
+                                            className="border-4 border-black rounded-lg w-full"
+                                            value={email}
+                                            onChange={onUserReportChange}
+                                            required
+                                        >
+                                            {users?.map((user, index) => (
+                                                <option key={index} value={user.Email}>{user.Email}</option>
+                                            ))}
+
+                                            {/* Add more options as needed */}
+                                        </select>
                                     
                                         <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                             Generate User Report
