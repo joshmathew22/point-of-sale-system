@@ -1,6 +1,6 @@
 "use client"
 
-import { Products, Users, Manager, Category} from "@/types";
+import { Products, Users, Manager, Category,userReport} from "@/types";
 import { PrismaClient } from '@prisma/client'
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
@@ -22,18 +22,30 @@ export default function Home() {
   const[products, setProducts] = useState<Products[]>()
   var total:number = 0
 
-
-
   useEffect(()=>{
     axios
       .get<Products[]>('api/products')
+      
       .then(response =>{
         if(response.data){
           setProducts(response.data)
       }})
       .catch((err) => console.log(err));
   },[products]);
-  //console.log(products)
+
+  const[userReport, setUserReport] = useState<userReport[]>()
+  useEffect(()=>{
+    axios
+      .get<userReport[]>('api/reportUser')
+      
+      .then(response =>{
+        if(response.data){
+          setUserReport(response.data)
+      }})
+      .catch((err) => console.log(err));
+  },[userReport]);
+ 
+  //console.log(userReport)
   /*
   if(products?.length ===0){
     return null
@@ -126,17 +138,18 @@ const[buttonPopup, setButtonPopup] = useState(false)
            } 
           </Popup>
           <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
-          <div className='flex justify-between'> 
+          <div className='flex justify-between '> 
+                
                 {(user==0)? //check if user is signed in 
-                  <a href="pages/login">Log in</a>:<button onClick={() =>signOut(0)}>Sign Out</button>
+                  <a href="pages/login" className="hover:text-gray-500">Log in</a>:<button className="hover:text-gray-500"onClick={() =>signOut(0)}>Sign Out</button>
                 }
                 {(isManager)?
-                <a href="pages/dashboard">Dashboard</a>:null
+                <a href="pages/dashboard" className="hover:text-gray-500">Dashboard</a>:null
                 }
-                <a href="pages/checkout">Checkout</a>
+                <a href="pages/checkout" className="hover:text-gray-500">Checkout</a>
           </div>
           <div className="flex ">
-          <a href="pages/orders">Orders</a>
+          <a href="pages/orders" className="hover:text-gray-500">Orders</a>
           </div>
           
 

@@ -69,3 +69,13 @@ export interface restockItem{
 export interface discount{
     DiscountApply: boolean
 }
+
+export interface userReport{
+    UserID: number,
+    Name: string,
+    Email: string,
+    AverageSpend:string,
+    NumberOfOrders:number,
+    LastPurchasedDate:Date,
+    LastPurchaseAmount:number
+}
