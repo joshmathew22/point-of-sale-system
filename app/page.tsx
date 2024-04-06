@@ -33,19 +33,7 @@ export default function Home() {
       .catch((err) => console.log(err));
   },[products]);
 
-  const[userReport, setUserReport] = useState<userReport[]>()
-  useEffect(()=>{
-    axios
-      .get<userReport[]>('api/reportUser')
-      
-      .then(response =>{
-        if(response.data){
-          setUserReport(response.data)
-      }})
-      .catch((err) => console.log(err));
-  },[userReport]);
- 
-  //console.log(userReport)
+  
   /*
   if(products?.length ===0){
     return null

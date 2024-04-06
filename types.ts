@@ -75,7 +75,7 @@ export interface userReport{
     Name: string,
     Email: string,
     AverageSpend:string,
-    NumberOfOrders:BigInt,
+    NumberOfOrders:string,
     LastPurchasedDate:Date,
     LastPurchaseAmount:number
 }
