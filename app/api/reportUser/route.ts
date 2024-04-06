@@ -4,44 +4,24 @@ import prisma from '@/client'
 
 export async function GET(req: NextRequest) {
     //COALESCE(total_orders.TotalOrders, 0) AS NumberOfOrders,
+    const searchParams = req.nextUrl.searchParams;
+    const email = searchParams.get('email');
     const report = await prisma.$queryRaw<userReport[]>`
     
-    SELECT DISTINCT
-    u.UserID,
-    CONCAT(u.FirstName, ' ', u.LastName) AS Name,
-    u.Email,
-    FORMAT(COALESCE(avg_order.AverageSpend, 0), 2) AS AverageSpend,
-    FORMAT(COALESCE(total_orders.TotalOrders, 0), 0) AS NumberOfOrders,
-    max_order_date.LastPurchasedDate
-FROM 
-    users u
-LEFT JOIN (
-    SELECT 
-        UserID,
-        AVG(TotalPrice) AS AverageSpend
-    FROM 
-        orders
-    GROUP BY 
-        UserID
-) AS avg_order ON u.UserID = avg_order.UserID
-LEFT JOIN (
-    SELECT 
-        UserID,
-        COUNT(*) AS TotalOrders
-    FROM 
-        orders
-    GROUP BY 
-        UserID
-) AS total_orders ON u.UserID = total_orders.UserID
-LEFT JOIN (
-    SELECT 
-        UserID,
-        MAX(OrderDate) AS LastPurchasedDate
-    FROM 
-        orders
-    GROUP BY 
-        UserID
-) AS max_order_date ON u.UserID = max_order_date.UserID
-LEFT JOIN orders o ON u.UserID = o.UserID AND o.OrderDate = max_order_date.LastPurchasedDate;`
+    SELECT u.UserID, 
+    CONCAT(u.FirstName, ' ', u.LastName) AS Name, 
+    OrderID, 
+    OrderDate, 
+    TotalPrice,
+    TotalAmount as QuantityTotal,
+    Email
+
+
+    FROM Users u
+    INNER JOIN Orders
+    ON u.UserID = Orders.UserID
+    WHERE u.Email = ${email}
+    ORDER BY OrderDate DESC;
+    `
     return new Response(JSON.stringify(report))
 }

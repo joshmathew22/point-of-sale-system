@@ -73,9 +73,9 @@ export interface discount{
 export interface userReport{
     UserID: number,
     Name: string,
+    OrderID: number,
     Email: string,
-    AverageSpend:string,
-    NumberOfOrders:string,
-    LastPurchasedDate:Date,
-    LastPurchaseAmount:number
+    OrderDate: Date,
+    TotalPrice: number,
+    QuantityTotal: number
 }

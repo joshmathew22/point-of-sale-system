@@ -4,12 +4,21 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { userReport } from "@/types";
 import axios from "axios";
+
+const addUserReportForm = {
+    email:""
+}
 const Reports: NextPage = () => {
 
     const[userReport, setUserReport] = useState<userReport[]>()
+    
+  //console.log(userReport)
+ 
+  //console.log(userReport)
+/*
   useEffect(()=>{
     axios
-      .get<userReport[]>('../../api/reportUser')
+      .get<userReport[]>(`../../api/reportUser?email=${email}`)
       
       .then(response =>{
         if(response.data){
@@ -17,9 +26,27 @@ const Reports: NextPage = () => {
       }})
       .catch((err) => console.log(err));
   },[userReport]);
-  //console.log(userReport)
- 
-  //console.log(userReport)
+  */
+
+  const[userReportData, setUserReportData]=useState(addUserReportForm)
+  const{email} =userReportData
+
+  const onUserReportChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    setUserReportData((prevState)=>({
+        ...prevState,
+        [e.target.id]: e.target.value
+   }));
+};
+  const userSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+    e.preventDefault();   
+    try {
+        const response = await axios.get<userReport[]>(`../../api/reportUser?email=${email}`);
+        setUserReport(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+
+  }
     return(
         <div className="flex min-h-screen">
             <Sidebar/>
@@ -31,6 +58,26 @@ const Reports: NextPage = () => {
                     </div>
                     <div className="relative overflow-x-auto">
                         <div>User Report</div>
+
+                        <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                            <h2 className="text-xl font-semibold">Categories</h2>
+                            <form onSubmit={userSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                                        <label htmlFor="email">
+                                            Email<span className="text-red-500">*</span>
+                                        </label>
+                                        <br />
+                                        <input className="border-4 border-black rounded-lg" type="text" id="email" value={email} onChange={onUserReportChange} required />
+                                        <br />
+                                        <br />
+                                    
+                                        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                            Generate User Report
+                                        </button>
+                                        <br />
+                                    </form>
+
+                        </div>
+                    {userReport ?(
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -44,13 +91,13 @@ const Reports: NextPage = () => {
                                         UserID
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Last Purchased Amount
+                                        OrderDate
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Number of Orders
+                                        TotalPrice
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Average Spend
+                                        QuantityTotal
                                     </th>
                                 </tr>
                             </thead>
@@ -67,19 +114,22 @@ const Reports: NextPage = () => {
                                             {report.UserID}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {new Date(report.LastPurchasedDate).toLocaleDateString()}
+                                            {new Date(report.OrderDate).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {report.NumberOfOrders}
+                                            {report.TotalPrice}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {report.AverageSpend}
+                                            {report.QuantityTotal}
                                         </td>
 
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
+                    )
+                    :
+                    null}
                     </div>
 
                  </div>
