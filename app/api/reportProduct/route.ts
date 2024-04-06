@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         p.ProductName,
         p.Price,
         p.StockQuantity,
-        SUM(oi.Quantity) AS AmountSoldLifeTime,
+        COALESCE(SUM(oi.Quantity), 0) AS AmountSoldLifeTime,
         p.ExpirationDate,
         (p.Price * p.StockQuantity) AS ProductsValue
     FROM

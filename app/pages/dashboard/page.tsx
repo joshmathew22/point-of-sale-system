@@ -89,7 +89,7 @@ const Dashboard: NextPage = () => {
     
     <div className="mb-5 text-center">
         <h1 className="text-4xl font-extrabold leading-9 tracking-tight">Dashboard</h1>
-        <p className="mt-2 text-2xl">Stock Numbers</p>
+        <p className="mt-2 text-2xl">Inventory</p>
     </div>
     <div className="max-w-4xl mx-auto">
         <div className="flex flex-wrap justify-center">
