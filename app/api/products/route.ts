@@ -20,8 +20,8 @@ export async function POST(req: NextRequest){
   const data: Products = await req.json();
 
   const newProduct = await prisma.$executeRaw`
-  INSERT INTO product(ProductID, CategoryID, ProductName, ProductDesc, Price, StockQuantity, ExpirationDate, NutritionValues)
-  VALUES(${data.ProductID}, ${data.CategoryID}, ${data.ProductName}, ${data.ProductDesc}, ${data.Price}, ${data.StockQuantity}, ${data.ExpirationDate}, ${data.NutritionValues} );`;
+  INSERT INTO product(ProductID, CategoryID, ProductName, ProductDesc, Price, StockQuantity, ExpirationDate, NutritionValues,SupplierName,SupplierID)
+  VALUES(${data.ProductID}, ${data.CategoryID}, ${data.ProductName}, ${data.ProductDesc}, ${data.Price}, ${data.StockQuantity}, ${data.ExpirationDate}, ${data.NutritionValues},${data.SupplierName},${data.SupplierID} );`;
 
   return new Response(JSON.stringify(newProduct))
 }

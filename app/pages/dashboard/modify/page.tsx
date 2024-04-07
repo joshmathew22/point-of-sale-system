@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Category, Products,restockItem } from "@/types";
+import { Category, Products,Supplier,restockItem } from "@/types";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/app/components/sidebar";
 const addProductsForm = {
@@ -13,7 +13,8 @@ const addProductsForm = {
     price: "",
     quantity:"",
     expiration: "",
-    nutrition:""
+    nutrition:"",
+    supplierName:""
 };
 
 const addCategorysForm = {
@@ -44,9 +45,11 @@ function generateRandomId(length: number): number {
 const Modify: NextPage = () => {
     var PID:number;
     var CID:number;
+    var SID:number;
     CID = -1;
+    SID = -1;
     const[addProductsFormData, setFormData] = useState(addProductsForm)
-    const{name,category,img,price,quantity,expiration,nutrition} = addProductsFormData;
+    const{name,category,img,price,quantity,expiration,nutrition,supplierName} = addProductsFormData;
 
     const[addCategoriesFormData, setCategoriesFormData] = useState(addCategorysForm)
     const{catName} = addCategoriesFormData;
@@ -104,6 +107,17 @@ const Modify: NextPage = () => {
     },[cat]);
    //console.log(cat)
 
+   const[sup, setSupplier] = useState<Supplier[]>()
+    //get all categories from database
+    useEffect(()=>{
+        axios
+        .get<Supplier[]>(`../../api/supplier`)
+        .then(response =>{
+            if(response.data){
+            setSupplier(response.data)
+        }})
+        .catch((err) => console.log(err));
+    },[sup]);
 
     const onProductChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setFormData((prevState)=>({
@@ -144,7 +158,7 @@ const Modify: NextPage = () => {
             [e.target.id]: e.target.value
        }));
     };
-
+console.log()
     const AddProductSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();   
         var catID:number
@@ -152,12 +166,20 @@ const Modify: NextPage = () => {
             if(element.CategoryName ==category){
                 CID = element.CategoryID
             }
+        }) 
+
+
+        sup?.forEach((element)=>{
+            if(element.SupplierName==supplierName){
+                SID = element.SupplierID
+            }
         })
         console.log(category)
-        if(CID===-1){
+        if(CID===-1 ||SID===-1){
             console.log("Category Doesnt Exist, Please create Category first")
             return
         }
+        
         PID = generateRandomId(8);
         axios.post('../../api/products', {
             ProductID: PID,
@@ -168,7 +190,9 @@ const Modify: NextPage = () => {
             StockQuantity: Number(quantity),
             //ExpirationDate: new Date(expiration),
             ExpirationDate: expiration,
-            NutritionValues: nutrition
+            NutritionValues: nutrition,
+            SupplierName: supplierName,
+            SupplierID: SID
 
         }) .then(()=>{
             toast("user added!")
@@ -334,10 +358,33 @@ const Modify: NextPage = () => {
                             </label>
                             <input className="border-4 border-black rounded-lg w-full" type="text" id="nutrition" value={nutrition} onChange={onProductChange} required />
                         </div>
+                        
+                            <div className="w-full md:w-1/2 pl-4">
+                            <label htmlFor="supplierName">
+                                Supplier <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                                id="supplierName"
+                                className="border-4 border-black rounded-lg w-full"
+                                value={supplierName}
+                                onChange={onProductCategoryChange}
+                                required
+                            >
+                                {sup?.map((categoryItem, index) => (
+                                    <option key={index} value={categoryItem.SupplierName}>{categoryItem.SupplierName}</option>
+                                ))}
+
+                                {/* Add more options as needed */}
+                                
+                            </select>
+                            
+                        </div>
                     </div>
+                    
                     <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded mt-4">
                         Add Product
                     </button>
+                    
                 </form>
             </div>
 

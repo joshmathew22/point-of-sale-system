@@ -8,6 +8,8 @@ export interface Products{
     ExpirationDate: Date;
     NutritionValues: string;
     isDeleted: boolean;
+    SupplierName: string;
+    SupplierID: number;
 }
 
 export interface Users{
