@@ -1,7 +1,6 @@
 import prisma from '@/client'
 import { NextRequest } from 'next/server'
-import { OrderItem
- } from '@/types'
+import { OrderItem} from '@/types'
 interface reqFortmat{
     OrderItemID: number,
     OrderID: number,

@@ -1,7 +1,6 @@
 "use client"
 
 import { Products, Users, Manager, Category,userReport} from "@/types";
-import prisma from "@/client";
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
 import toast from "react-hot-toast";
