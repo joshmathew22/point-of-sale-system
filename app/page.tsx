@@ -1,12 +1,11 @@
 "use client"
 
 import { Products, Users, Manager, Category,userReport} from "@/types";
-import { PrismaClient } from '@prisma/client'
+import prisma from "@/client";
 import { useEffect, useState } from "react";
 import { userStore } from "./pages/store";
 import toast from "react-hot-toast";
 import Popup from './components/Popup'
-const prisma = new PrismaClient()
 import React from 'react';
 var cart:Products[] = []
 import axios from "axios";
