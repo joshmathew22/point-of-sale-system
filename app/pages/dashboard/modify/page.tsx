@@ -20,6 +20,11 @@ const addCategorysForm = {
     catName:""
 }
 
+const addSupplierForm = {
+    SupplierName:"",
+
+}
+
 const addStockForm = {
     stockName:"",
     stock:""
@@ -45,6 +50,9 @@ const Modify: NextPage = () => {
 
     const[addCategoriesFormData, setCategoriesFormData] = useState(addCategorysForm)
     const{catName} = addCategoriesFormData;
+
+    const[addSupplierFormData, setSupplierFormData] = useState(addSupplierForm)
+    const{SupplierName} = addSupplierFormData;
 
     const[addStockFormData,setStockFormData]=useState(addStockForm)
     const{stockName,stock} =addStockFormData
@@ -117,7 +125,12 @@ const Modify: NextPage = () => {
             [e.target.id]: e.target.value
        }));
     };
-
+    const onSupplierChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        setSupplierFormData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+       }));
+    };
     const onStockChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setStockFormData((prevState)=>({
             ...prevState,
@@ -160,6 +173,23 @@ const Modify: NextPage = () => {
         }) .then(()=>{
             toast("user added!")
             setFormData(addProductsForm);
+            //UID= UID+1
+        }) .catch(function(error){
+            toast.error("something went wrong")
+        })
+    }
+
+    const AddSupplierSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        CID = generateRandomId(8);
+        console.log(SupplierName,CID)
+        axios.post('../../api/supplier', {
+            SupplierID: CID,
+            SupplierName:SupplierName
+
+        }) .then(()=>{
+            toast("Category added!")
+            setSupplierFormData(addSupplierForm);
             //UID= UID+1
         }) .catch(function(error){
             toast.error("something went wrong")
@@ -310,6 +340,26 @@ const Modify: NextPage = () => {
                     </button>
                 </form>
             </div>
+
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Supplier</h2>
+                <form onSubmit={AddSupplierSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="SupplierName">
+                                Supplier Name <span className="text-red-500">*</span>
+                            </label>
+                            <br />
+                            <input className="border-4 border-black rounded-lg" type="text" id="SupplierName" value={SupplierName} onChange={onSupplierChange} required />
+                            <br />
+                            <br />
+                           
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Supplier
+                            </button>
+                            <br />
+                        </form>
+
+            </div>
+
             <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
                 <h2 className="text-xl font-semibold">Categories</h2>
                 <form onSubmit={AddCategorySubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">

@@ -70,6 +70,16 @@ export interface discount{
     DiscountApply: boolean
 }
 
+export interface Supplier{
+    SupplierID: number,
+    SupplierName: string,
+    ContactPerson: string,
+    ContactNumber: string,
+    Email: string,
+    Address: string,
+    City: string
+}
+
 export interface userReport{
     UserID: number,
     Name: string,

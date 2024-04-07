@@ -118,6 +118,7 @@ model product {
   NutritionValues String         @db.VarChar(255)
   restockMSG      Int            @default(0) @db.TinyInt
   isDeleted       Int?           @default(0) @db.TinyInt
+  SupplierID      Int?
   listing         listing[]
   orderitem       orderitem[]
   category        category       @relation(fields: [CategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "belong")
@@ -202,16 +203,10 @@ model shoppingcart {
 }
 
 model supplier {
-  SupplierID    Int        @id
-  SupplierName  String     @db.VarChar(100)
-  ContactPerson String     @db.VarChar(100)
-  ContactNumber String     @db.VarChar(10)
-  Email         String     @db.VarChar(100)
-  Address       String     @db.VarChar(255)
-  City          String     @db.VarChar(45)
-  PaymentTerms  String     @db.VarChar(50)
-  listing       listing[]
-  supplies      supplies[]
+  SupplierID   Int        @id
+  SupplierName String     @db.VarChar(100)
+  listing      listing[]
+  supplies     supplies[]
 }
 
 model supplies {
