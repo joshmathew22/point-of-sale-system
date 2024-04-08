@@ -108,7 +108,5 @@ export interface sellerReport{
     Supplies: string,
     UnitPrice: number,
     StockQuantity: number,
-    TotalVaule: number,
-    Quantity: number,
-    MostPurchasedItem: string
+    TotalValue: number,
 }

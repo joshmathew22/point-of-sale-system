@@ -124,7 +124,7 @@ const Reports: NextPage = () => {
     const sellerSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();   
         try {
-            const response = await axios.get<sellerReport[]>(`../../api/reportSeller?category=${category}`);
+            const response = await axios.get<sellerReport[]>(`../../api/reportSeller?seller=${seller}`);
             setSellerReport(response.data);
         } catch (error) {
             console.error(error);
@@ -361,12 +361,7 @@ const Reports: NextPage = () => {
                                     <th scope="col" className="px-6 py-3">
                                         Total Value
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Quantity
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Most Purchased Item
-                                    </th>
+                                   
                                     
                                 </tr>
                             </thead>
@@ -386,14 +381,9 @@ const Reports: NextPage = () => {
                                             {report.StockQuantity}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {report.TotalVaule}
+                                            {report.TotalValue}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            {report.Quantity}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {report.MostPurchasedItem}
-                                        </td>
+                                      
 
                                     </tr>
                                 ))}
