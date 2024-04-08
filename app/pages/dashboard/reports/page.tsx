@@ -155,6 +155,7 @@ const Reports: NextPage = () => {
                                             onChange={onUserReportChange}
                                             required
                                         >
+                                            <option>Select One</option>
                                             {users?.map((user, index) => (
                                                 <option key={index} value={user.Email}>{user.Email}</option>
                                             ))}
@@ -238,6 +239,7 @@ const Reports: NextPage = () => {
                                             onChange={onProductReportChange}
                                             required
                                         >
+                                            <option>Select One</option>
                                             {cat?.map((category, index) => (
                                                 <option key={index} value={category.CategoryName}>{category.CategoryName}</option>
                                             ))}
@@ -328,6 +330,7 @@ const Reports: NextPage = () => {
                                             onChange={onSellerReportChange}
                                             required
                                         >
+                                            <option>Select One</option>
                                             {supplier?.map((user, index) => (
                                                 <option key={index} value={user.SupplierName}>{user.SupplierName}</option>
                                             ))}
