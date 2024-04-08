@@ -152,7 +152,7 @@ const Modify: NextPage = () => {
        }));
     };
 
-    const onDeleteChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    const onDeleteChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
         setDeleteFormData((prevState)=>({
             ...prevState,
             [e.target.id]: e.target.value
@@ -442,11 +442,22 @@ const Modify: NextPage = () => {
                             <label htmlFor="deleteName">
                                 Product Name <span className="text-red-500">*</span>
                             </label>
-                            <br />
-                            <input className="border-4 border-black rounded-lg" type="text" id="deleteName" value={deleteName} onChange={onDeleteChange} required />
-                            <br />
-                            <br />
-                           
+                            
+                            <select
+                                id="deleteName"
+                                className="border-4 border-black rounded-lg w-full"
+                                value={deleteName}
+                                onChange={onDeleteChange}
+                                required
+                            >
+                                <option>Select One</option>
+                                {products?.filter(product =>!product.isDeleted).map((categoryItem, index) => (
+                                    <option key={index} value={categoryItem.ProductName}>{categoryItem.ProductName}</option>
+                                ))}
+
+                                {/* Add more options as needed */}
+                                
+                            </select>
                             <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                 Delete Product
                             </button>
