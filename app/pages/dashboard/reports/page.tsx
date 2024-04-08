@@ -2,7 +2,7 @@
 import Sidebar from "@/app/components/sidebar";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { productReport, userReport, Users, Category} from "@/types";
+import { productReport, userReport, Users, Category, sellerReport} from "@/types";
 import axios from "axios";
 
 const addUserReportForm = {
@@ -12,10 +12,15 @@ const addUserReportForm = {
 const addProductReportForm = {
     category:""
 }
+
+const addSellerReportForm = {
+    seller:""
+}
 const Reports: NextPage = () => {
 
     const[userReport, setUserReport] = useState<userReport[]>()
     const[productReport, setProductReport] = useState<productReport[]>()
+    const[sellerReport, setSellerReport] = useState<sellerReport[]>()
   //console.log(userReport)
  
   //console.log(userReport)
@@ -93,8 +98,40 @@ const Reports: NextPage = () => {
     } catch (error) {
         console.error(error);
     }
-
   }
+
+//sellers
+    const[supplier, setSupplier] = useState<sellerReport[]>()
+        useEffect(()=>{
+            axios
+            .get<sellerReport[]>(`../../api/supplier`)
+            .then(response =>{
+                if(response.data){
+                setSupplier(response.data)
+            }})
+            .catch((err) => console.log(err));
+        },[supplier]);
+
+    const[sellerReportData, setSellerReportData]=useState(addSellerReportForm)
+    const{seller} =sellerReportData
+
+    const onSellerReportChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
+        setSellerReportData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+    }));
+    };
+    const sellerSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();   
+        try {
+            const response = await axios.get<sellerReport[]>(`../../api/reportSeller?category=${category}`);
+            setSellerReport(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
     return(
         <div className="flex min-h-screen">
             <Sidebar/>
@@ -275,8 +312,100 @@ const Reports: NextPage = () => {
                     :
                     null}
                     </div>
-                 </div>
-                 
+
+
+                 <div className="relative overflow-x-auto">
+                        <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                            <h2 className="text-xl font-semibold">Supplier Report</h2>
+                            <form onSubmit={sellerSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                                        <label htmlFor="seller">
+                                            Seller<span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            id="seller"
+                                            className="border-4 border-black rounded-lg w-full"
+                                            value={seller}
+                                            onChange={onSellerReportChange}
+                                            required
+                                        >
+                                            {supplier?.map((user, index) => (
+                                                <option key={index} value={user.SupplierName}>{user.SupplierName}</option>
+                                            ))}
+
+                                            {/* Add more options as needed */}
+                                        </select>
+                                    
+                                        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                            Generate Supplier Report
+                                        </button>
+                                        <br />
+                                    </form>
+
+                        </div>
+                    {sellerReport ?(
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3">
+                                        Supplier Name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Supplies
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Unit Price
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Stock Quantity
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Total Value
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Quantity
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Most Purchased Item
+                                    </th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {sellerReport?.map((report, index) => (
+                                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {report.SupplierName}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.Supplies}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.UnitPrice}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.StockQuantity}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.TotalVaule}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.Quantity}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {report.MostPurchasedItem}
+                                        </td>
+
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )
+                    :
+                    null}
+                    </div>            
+                </div>
+
+
             </div>
         </div>
     )

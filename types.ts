@@ -102,3 +102,13 @@ export interface productReport{
     ExpirationDate: Date,
     ProductsValue: number
 }
+
+export interface sellerReport{
+    SupplierName: string,
+    Supplies: string,
+    UnitPrice: number,
+    StockQuantity: number,
+    TotalVaule: number,
+    Quantity: number,
+    MostPurchasedItem: string
+}

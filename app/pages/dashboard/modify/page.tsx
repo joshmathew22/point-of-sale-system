@@ -158,25 +158,34 @@ const Modify: NextPage = () => {
             [e.target.id]: e.target.value
        }));
     };
-console.log()
+
     const AddProductSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();   
         var catID:number
+
         cat?.forEach((element)=>{
             if(element.CategoryName ==category){
+                
                 CID = element.CategoryID
             }
         }) 
 
 
         sup?.forEach((element)=>{
+            console.log(element.SupplierName,supplierName)
             if(element.SupplierName==supplierName){
                 SID = element.SupplierID
             }
         })
         console.log(category)
+        
         if(CID===-1 ||SID===-1){
-            console.log("Category Doesnt Exist, Please create Category first")
+            console.log("Category Doesnt Exist")
+            return
+        }
+
+        if(CID===-1 ||SID===-1){
+            console.log("Category Doesnt Exist")
             return
         }
         
@@ -192,7 +201,7 @@ console.log()
             ExpirationDate: expiration,
             NutritionValues: nutrition,
             SupplierName: supplierName,
-            SupplierID: SID
+            SupplierID:SID
 
         }) .then(()=>{
             toast("user added!")
@@ -320,11 +329,12 @@ console.log()
                                 onChange={onProductCategoryChange}
                                 required
                             >
+                                <option>Select One</option>
                                 {cat?.map((categoryItem, index) => (
                                     <option key={index} value={categoryItem.CategoryName}>{categoryItem.CategoryName}</option>
                                 ))}
 
-                                {/* Add more options as needed */}
+                                
                             </select>
                         </div>
 
@@ -370,6 +380,7 @@ console.log()
                                 onChange={onProductCategoryChange}
                                 required
                             >
+                                <option>Select One</option>
                                 {sup?.map((categoryItem, index) => (
                                     <option key={index} value={categoryItem.SupplierName}>{categoryItem.SupplierName}</option>
                                 ))}
