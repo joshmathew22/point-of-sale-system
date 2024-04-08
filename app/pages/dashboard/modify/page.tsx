@@ -145,6 +145,12 @@ const Modify: NextPage = () => {
             [e.target.id]: e.target.value
        }));
     };
+    const  onStockProductChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
+        setStockFormData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+       }));
+    };
     const onStockChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         setStockFormData((prevState)=>({
             ...prevState,
@@ -470,10 +476,23 @@ const Modify: NextPage = () => {
                             <label htmlFor="stockName">
                                 Product Name <span className="text-red-500">*</span>
                             </label>
-                            <br />
-                            <input className="border-4 border-black rounded-lg" type="text" id="stockName" value={stockName} onChange={onStockChange} required />
-                            <br />
-                            <br />
+                           
+
+                            <select
+                                id="stockName"
+                                className="border-4 border-black rounded-lg w-full"
+                                value={stockName}
+                                onChange={onStockProductChange}
+                                required
+                            >
+                                <option>Select One</option>
+                                {products?.filter(product =>!product.isDeleted).map((categoryItem, index) => (
+                                    <option key={index} value={categoryItem.ProductName}>{categoryItem.ProductName}</option>
+                                ))}
+
+                                {/* Add more options as needed */}
+                                
+                            </select>
 
                             <label htmlFor="stock">
                                 Add # of stock? <span className="text-red-500">*</span>
