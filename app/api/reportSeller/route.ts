@@ -5,7 +5,7 @@ import prisma from '@/client'
 export async function GET(req: NextRequest) {
     //COALESCE(total_orders.TotalOrders, 0) AS NumberOfOrders,
     const searchParams = req.nextUrl.searchParams;
-    const email = searchParams.get('seller');
+    const seller = searchParams.get('seller');
     const report = await prisma.$queryRaw<sellerReport[]>`
     
     SELECT DISTINCT
@@ -18,7 +18,8 @@ export async function GET(req: NextRequest) {
     FROM 
         product p, supplier s
     WHERE 
-        p.SupplierID = s.SupplierID;
+        p.SupplierID = s.SupplierID AND
+        s.supplierName= ${seller}
 
     `
     return new Response(JSON.stringify(report))
