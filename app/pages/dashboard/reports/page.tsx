@@ -210,7 +210,7 @@ const Reports: NextPage = () => {
                                             {new Date(report.OrderDate).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {report.TotalPrice}
+                                             {report.TotalPrice.toFixed(2)} $
                                         </td>
                                         <td className="px-6 py-4">
                                             {report.QuantityTotal}

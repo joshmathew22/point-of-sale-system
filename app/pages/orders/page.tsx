@@ -52,7 +52,7 @@ export default function OrderPage(){
       <>
         <div>Order ID: {o.OrderID}</div>
         <div>Order Date: {o.OrderDate.toString().substring(0, 10)}</div>
-        <div>Total Price: {o.TotalPrice}</div>
+        <div>Total Price: {o.TotalPrice.toFixed(2)} $</div>
         {orderItem?.map((oi, oiIndex) => (
           <div key={oiIndex}>
             {o.OrderID === oi.OrderID && (

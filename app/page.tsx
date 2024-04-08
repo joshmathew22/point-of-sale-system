@@ -157,7 +157,7 @@ const[buttonPopup, setButtonPopup] = useState(false)
       <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 object-contain ">
         {products?.filter(product => product.CategoryID === category.CategoryID && !product.isDeleted).map((product) => (
           <div key={product.ProductID} className="group relative">
-            <div className=" aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80 ">
+            <div className=" aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
               <img
                 src={product.ProductDesc}
                 //alt={product.imageAlt}
