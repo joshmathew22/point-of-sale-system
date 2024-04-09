@@ -241,11 +241,11 @@ export default function CheckoutPage(){
             {( total>100)? //discount
               <div>
                 <p className="mt-8">Congrats your order was over 100 dollars, coupon applied!</p>
-                <p className="mt-1">Price without discount: {total}</p>
-                <p className="mt-1">Final Price: (20 percent off): {total*.8}</p>
+                <p className="mt-1">Price without discount: {total.toFixed(2)} $</p>
+                <p className="mt-1">Final Price: (20 percent off): {(total*.8).toFixed(2)} $</p>
               </div>
               : 
-              <p className="mt-8">Total Price: {total}</p>
+              <p className="mt-8">Total Price: {total.toFixed(2)} $</p>
             }
                 <button  
                   type = "submit"
