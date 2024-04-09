@@ -6,11 +6,14 @@ import { productReport, userReport, Users, Category, sellerReport} from "@/types
 import axios from "axios";
 
 const addUserReportForm = {
-    email:""
+    email:"",
+    orderDateStart: "",
+    orderDateEnd: ""
 }
 
 const addProductReportForm = {
-    category:""
+    category:"",
+    expirationDate: ""
 }
 
 const addSellerReportForm = {
@@ -58,10 +61,20 @@ const Reports: NextPage = () => {
         [e.target.id]: e.target.value
    }));
 };
+
+const[userReportDateData, setUserReportDateData]=useState(addUserReportForm)
+  const{orderDateStart,orderDateEnd} =userReportDateData
+const onUserReportDateChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    setUserReportDateData((prevState)=>({
+        ...prevState,
+        [e.target.id]: e.target.value
+   }));
+};
   const userSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();   
     try {
-        const response = await axios.get<userReport[]>(`../../api/reportUser?email=${email}`);
+        console.log(orderDateStart,orderDateEnd)
+        const response = await axios.get<userReport[]>(`../../api/reportUser?email=${email}&startDate=${orderDateStart}&endDate=${orderDateEnd}`);
         setUserReport(response.data);
     } catch (error) {
         console.error(error);
@@ -90,10 +103,21 @@ const Reports: NextPage = () => {
         [e.target.id]: e.target.value
    }));
 };
+
+const[productDateReportData, setProductDateReportData]=useState(addProductReportForm)
+  const{expirationDate} =productDateReportData
+
+  const onProductDateChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    setProductDateReportData((prevState)=>({
+        ...prevState,
+        [e.target.id]: e.target.value
+   }));
+};
+
   const productSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();   
     try {
-        const response = await axios.get<productReport[]>(`../../api/reportProduct?category=${category}`);
+        const response = await axios.get<productReport[]>(`../../api/reportProduct?category=${category}&expirationDate=${expirationDate}`);
         setProductReport(response.data);
     } catch (error) {
         console.error(error);
@@ -162,14 +186,29 @@ const Reports: NextPage = () => {
 
                                             {/* Add more options as needed */}
                                         </select>
-                                    
+                                        <div className="flex justify-center mt-5">
+                                            <div className="text-center text-lg leading-9 tracking-tight text-gray-900 mr-4">
+                                                <label htmlFor="orderDateStart">
+                                                    Order Date From<span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="border-4 border-black rounded-lg w-full" type="date" id="orderDateStart" value={orderDateStart} onChange={onUserReportDateChange} required />
+                                            </div>
+                                            <div className="text-center text-lg leading-9 tracking-tight text-gray-900">
+                                                <label htmlFor="orderDateEnd">
+                                                    Order Date To <span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="border-4 border-black rounded-lg w-full" type="date" id="orderDateEnd" value={orderDateEnd} onChange={onUserReportDateChange} required />
+                                            </div>
+                                        </div>
                                         <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                             Generate User Report
                                         </button>
                                         <br />
                                     </form>
+                                    
 
                         </div>
+                        
                     {userReport ?(
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -246,7 +285,14 @@ const Reports: NextPage = () => {
 
                                             {/* Add more options as needed */}
                                         </select>
-                                    
+                                        <div className="flex justify-center mt-5">
+                                            <div className="text-center text-lg leading-9 tracking-tight text-gray-900 mr-4">
+                                                <label htmlFor="expirationDate">
+                                                    Expiration Date Before<span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="border-4 border-black rounded-lg w-full" type="date" id="expirationDate" value={expirationDate} onChange={onProductDateChange} required />
+                                            </div>
+                                        </div>
                                         <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
                                             Generate User Report
                                         </button>
