@@ -246,8 +246,12 @@ const[productDateReportData, setProductDateReportData]=useState(addProductReport
                                             {report.UserID}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {new Date(report.OrderDate).toLocaleDateString()}
-                                        </td>
+                                            {(() => {
+                                                const orderDate = new Date(report.OrderDate);
+                                                orderDate.setDate(orderDate.getDate() + 1); // Advance the date by one day
+                                                return orderDate.toLocaleDateString();
+                                            })()}
+                                            </td>
                                         <td className="px-6 py-4">
                                              {report.TotalPrice.toFixed(2)} $
                                         </td>
