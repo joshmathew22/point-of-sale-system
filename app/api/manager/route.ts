@@ -11,3 +11,8 @@ export async function GET(req: NextRequest) {
     WHERE UserID = ${UserID}`
     return new Response(JSON.stringify(admin))
   }
+
+  
+
+
+  

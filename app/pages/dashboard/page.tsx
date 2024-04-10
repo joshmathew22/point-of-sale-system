@@ -3,9 +3,10 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Category, Products,restockItem } from "@/types";
+import { Category, Products,restockItem,Users, Manager} from "@/types";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/app/components/sidebar";
+import { manager } from "@prisma/client";
 
 
 function generateRandomId(length: number): number {
@@ -14,15 +15,26 @@ function generateRandomId(length: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const addAdminForm = {
+    UserID:"",
+    ManagerID: ""
+}
 const Dashboard: NextPage = () => {
     var PID:number;
     var CID:number;
     CID = -1;
-   
+    var ID:number;
 
     const[products, setProducts] = useState<Products[]>()
 
     const[restock, setStock] = useState<restockItem[]>()
+
+    const[users, setUsers] = useState<Users[]>()
+
+    const[admin, setAdmin] = useState<manager[]>()
+
+    const[addAdminFormData,setAdminFormData]=useState(addAdminForm)
+    const{UserID} =addAdminFormData
     //const[update, setUpdate] = useState(0)
     //const router = useRouter();
 
@@ -64,9 +76,29 @@ const Dashboard: NextPage = () => {
     },[cat]);
     //console.log(cat)
 
-
+    useEffect(()=>{
+        axios
+        .get<Users[]>('../api/users')
+        .then(response =>{
+            if(response.data){
+            setUsers(response.data)
+            
+            //console.log(restock)
+        }})
+        .catch((err) => console.log(err));
+    },[users]);
    
-
+    useEffect(()=>{
+        axios
+        .get<Manager[]>('../api/admin')
+        .then(response =>{
+            if(response.data){
+            setAdmin(response.data)
+            
+            //console.log(restock)
+        }})
+        .catch((err) => console.log(err));
+    },[admin]);
     //modify restockMSG
     products?.forEach((product) => {
         if(product.StockQuantity>3){
@@ -78,8 +110,29 @@ const Dashboard: NextPage = () => {
     })
 
     
-    
+    const onAdminChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
+        setAdminFormData((prevState)=>({
+            ...prevState,
+            [e.target.id]: e.target.value
+            //name: e.target.value
+        }));
+    };
+    const AddAdminSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        
+        ID = generateRandomId(8);
+        axios.post('../../api/admin', {
+            ManagerID: ID,
+            UserID: UserID,
 
+        }) .then(()=>{
+            toast("user added!")
+            setAdminFormData(addAdminForm);
+            //UID= UID+1
+        }) .catch(function(error){
+            toast.error("something went wrong")
+        })
+    }
    
     return (
         <div className="flex min-h-screen">
@@ -125,6 +178,52 @@ const Dashboard: NextPage = () => {
         
             </div>
         </div>
+        <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                <h2 className="text-xl font-semibold">Grant Admin Role To User</h2>
+                <form onSubmit={AddAdminSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                            <label htmlFor="UserID">
+                                User Email <span className="text-red-500">*</span>
+                            </label>
+                           
+
+                            <select
+                                id="UserID"
+                                className="border-4 border-black rounded-lg w-full"
+                                value={UserID}
+                                onChange={onAdminChange}
+                                required
+                            >
+                                <option>Select One</option>
+                                {users?.map((user, index) => {
+                                    console.log(users,admin)
+                                    let isAdmin = false;
+                                    for (const adminItem of admin || []) {
+                                        if (adminItem?.UserID === user.UserID) {
+                                            isAdmin = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!isAdmin) {
+                                        return (
+                                            <option key={index} value={user.UserID}>{user.Email}</option>
+                                        );
+                                    }
+                                    return null; // or you can render an alternative if desired
+                                })}
+
+
+
+                                {/* Add more options as needed */}
+                                
+                            </select>
+
+                            
+                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                Add Admin
+                            </button>
+                            <br />
+                        </form>
+            </div>
     </div>
 </div>
 </div>
