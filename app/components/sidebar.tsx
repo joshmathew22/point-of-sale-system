@@ -16,6 +16,11 @@ const Sidebar = () => {
             </a>
         </li>
         <li>
+            <a href="/pages/dashboard/users" className="hover:text-gray-500">
+                Users
+            </a>
+        </li>
+        <li>
             <a href="/pages/dashboard/modify" className="hover:text-gray-500">
                 Modify Data
             </a>
