@@ -3,8 +3,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Category, Products,restockItem,Users, Manager} from "@/types";
-import { useRouter } from "next/navigation";
+import { Users, Manager} from "@/types";
 import Sidebar from "@/app/components/sidebar";
 
 function generateRandomId(length: number): number {
@@ -17,7 +16,7 @@ const addAdminForm = {
     UserID:"",
     ManagerID: ""
 }
-const Users: NextPage = () => {
+const UsersRoles: NextPage = () => {
     var PID:number;
     var CID:number;
     CID = -1;
@@ -202,4 +201,4 @@ const Users: NextPage = () => {
     );
 };
 
-export default Users;
+export default UsersRoles;
