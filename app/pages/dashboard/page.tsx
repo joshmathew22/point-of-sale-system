@@ -100,7 +100,8 @@ const Dashboard: NextPage = () => {
         }
     })
 
- 
+    const allRestockFalse = restock?.every((category) => category.restockMSG === false);
+   // const allRestockFalse = restock.every((category: RestockItem) => category.restockMSG === false);
     return (
         <div className="flex min-h-screen">
     <Sidebar/>
@@ -112,41 +113,40 @@ const Dashboard: NextPage = () => {
         <p className="mt-2 text-2xl">Inventory</p>
     </div>
     <div className="max-w-4xl mx-auto">
-        <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center">
+        <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4 w-full md:w-auto">
+            <h2 className="text-xl font-semibold">Admin Restock Warnings</h2>
             
 
 
-            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+            {restock?.map((category) => (
+                (category.restockMSG==true) ? 
+                    <div key={category.ProductID}>{category.ProductName} needs to be restocked</div>
+                :   
+                    null
+            ))}
+        </div>
+
+        <div className="flex flex-wrap md:flex-nowrap">
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4 flex-1">
                 <h2 className="text-xl font-semibold">Products/Stock Numbers</h2>
                 {products?.map((product) => (
-                            (product.isDeleted==false)?(
-                            <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
-                            )
-                            :null
-                        ))}
-                
+                    (product.isDeleted==false) ? (
+                        <div key={product.ProductID}>{product.ProductName}: {product.StockQuantity}</div>
+                    ) : null
+                ))}
             </div>
-            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+
+            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4 flex-1">
                 <h2 className="text-xl font-semibold">Current Categories</h2>
                 {cat?.map((category) => (
                     <div key={category.CategoryID}>{category.CategoryName}</div>
                 ))}
             </div>
-
-            <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
-                <h2 className="text-xl font-semibold">Admin Restock Warnings</h2>
-                {restock?.map((category) => (
-                    (category.restockMSG==true) ? 
-                        <div key={category.ProductID}>{category.ProductName} needs to be restocked</div>
-                    :   
-                        null
-                    ))}
-
-        
-            </div>
         </div>
-        
     </div>
+</div>
+
 </div>
 </div>
 </div>
