@@ -118,12 +118,12 @@ model product {
   NutritionValues String         @db.VarChar(255)
   restockMSG      Int            @default(0) @db.TinyInt
   isDeleted       Int?           @default(0) @db.TinyInt
-  SupplierID      Int?
+  SupplierID      Int
   SupplierName    String?        @db.VarChar(45)
   listing         listing[]
   orderitem       orderitem[]
   category        category       @relation(fields: [CategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction, map: "belong")
-  supplier        supplier?      @relation(fields: [SupplierID], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction, map: "supplied by")
+  supplier        supplier       @relation(fields: [SupplierID], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction, map: "supplied by")
   reports         reports[]
   review          review[]
   sales           sales[]
