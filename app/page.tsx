@@ -132,7 +132,7 @@ const[buttonPopup, setButtonPopup] = useState(false)
                 {(isManager)?
                 <a href="pages/dashboard" className="hover:text-gray-500">Dashboard</a>:null
                 }
-                <a href="pages/checkout" className="hover:text-gray-500">Checkout</a>
+                <a href="pages/cart" className="hover:text-gray-500">Cart</a>
           </div>
           <div className="flex ">
           <a href="pages/orders" className="hover:text-gray-500">Orders</a>

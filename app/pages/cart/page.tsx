@@ -18,7 +18,7 @@ OID = generateRandomUserId(8);
 var inc:number = 0
 var stock:number
 //const CheckoutPage: NextPage = () => {
-export default function CheckoutPage(){
+export default function CartPage(){
     var stockNum:number
     const[products, setProducts] = useState<Checkout[]>()
     const {user} = userStore();
@@ -85,80 +85,7 @@ export default function CheckoutPage(){
     
     //console.log(OID)
     const addOrder = async(price:number)=>{
-      setButtonPopup(true)
-      console.log(products)
-      console.log(p)
-      const date = new Date();
-      const dateWithoutTime = date.toISOString().split('T')[0];
-      
-      let x:number
-      x=0
-      if(products==null){
-        x=0
-      }else{
-        x=products.length
-      }
-
-      //check quantity
-
-
-      //create order
-      await axios.post('../api/order', {
-          OrderID: OID,
-          UserID: user,
-          OrderDate:dateWithoutTime,
-          TotalAmount:products?.length,
-          OrderStatus:"Placed",
-          TotalPrice: price
-      }) .then(()=>{
-          toast("user added!")
-          console.log("order id:",OID)
-      }) .catch(function(error){
-          toast.error("something went wrong")
-      })
-      //add each items to order
-      
-      products?.map((product)=>{
-        //subtract quantity by one
-    /*
-        p?.map((prod) =>{
-          if (prod.ProductID == product.ProductID){
-            //stockNum = prod.StockQuantity -1
-            axios.patch(`../api/products?StockQuantity=${--prod.StockQuantity}&ProductID=${product.ProductID}`)
-            .then(() => {
-              console.log(prod.StockQuantity)
-              toast("user added!")
-            }) 
-            console.log(stockNum)
-          }
-        })*/
-        
-        console.log(OID)
-          axios.post('../api/orderItems', {
-            OrderItemID: inc,
-            OrderID: OID,
-            ProductID: product.ProductID,
-            Quantity: product.Quantity,
-            PricePerUnit: product.TotalPrice / product.Quantity
-
-        }) .then(()=>{
-            toast("user added!")
-            console.log("order id for orderItems:",OID)
-        }) .catch(function(error){
-            toast.error("something went wrong")
-        })
-      })
-    
-      //delete all products from cart becuase they have been added to order
-      products?.map((product)=>{
-        axios.delete(`../api/checkout?CartID=${product.CartID}`)
-          .then(() => {
-              toast.success('Removed track from album')
-          })
-          .catch(Error => console.error(Error))
-        
-      })
-      //window.location.href = "../";
+      window.location.href = "/pages/checkout";
     }
 
     products?.map((product)=>{
@@ -182,16 +109,9 @@ export default function CheckoutPage(){
 
     return (
         <div className="relative isolate px-6 pt-14 lg:px-8">
-          <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-            {products!=null?
-              <h3>Sucesfully Added Order!</h3>
-              :
-              <h3>No items in cart. Please add items to cart.</h3>
-           } 
-          </Popup>
           <div className="">
-            <a href="/pages/cart">back</a>
-            <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Checkout</div>
+            <a href="../">back</a>
+            <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Cart</div>
           </div>
           <div className="mt-8">
                   <div className="flow-root">
@@ -251,12 +171,10 @@ export default function CheckoutPage(){
                   type = "submit"
                   className="bg-black text-white font-bold py-2 px-4 rounded"
                   onClick={() =>{addOrder(total)}}>
-                          Checkout
+                          Proceed to Checkout
                 </button>
               </div>}   
           </div>            
     );
     
 }
-
-//export default CheckoutPage;
