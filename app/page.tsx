@@ -146,7 +146,10 @@ const [showDropdown, setShowDropdown] = useState(false);
               <h3>No Stock</h3>
            } 
           </Popup>
-          <div className='mb-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Grocery Store</div>
+          <div className='flex content-center '> 
+            <div className='mb-5 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 flex justify-center'>Grocery Store</div>
+          </div>    
+          
           <div className='flex justify-between '> 
                 
                 {(user==0)? //check if user is signed in 
@@ -160,44 +163,44 @@ const [showDropdown, setShowDropdown] = useState(false);
           <div className="flex justify-between">
             <a href="pages/orders" className="hover:text-gray-500">Orders</a>
             {isManager && (
-  <div className="relative">
-    {/* Button to toggle dropdown visibility */}
-    <button
-      className="relative z-10 p-2"
-      onClick={() => setShowDropdown(!showDropdown)}
-    >
-      {/* Your SVG icon */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="h-10 w-10"
-      >
-        <path
-        fillRule="evenodd"
-        d="M5.25 9a6.75 6.75 0 0 1 13.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 0 1-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 1 1-7.48 0 24.585 24.585 0 0 1-4.831-1.244.75.75 0 0 1-.298-1.205A8.217 8.217 0 0 0 5.25 9.75V9Zm4.502 8.9a2.25 2.25 0 1 0 4.496 0 25.057 25.057 0 0 1-4.496 0Z"
-        clipRule="evenodd"
-      />
-        {/* SVG path */}
-      </svg>
-    </button>
+              <div className="relative">
+                {/* Button to toggle dropdown visibility */}
+                <button
+                  className="relative z-10 p-2"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
+                  {/* Your SVG icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-10 w-10"
+                  >
+                    <path
+                    fillRule="evenodd"
+                    d="M5.25 9a6.75 6.75 0 0 1 13.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 0 1-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 1 1-7.48 0 24.585 24.585 0 0 1-4.831-1.244.75.75 0 0 1-.298-1.205A8.217 8.217 0 0 0 5.25 9.75V9Zm4.502 8.9a2.25 2.25 0 1 0 4.496 0 25.057 25.057 0 0 1-4.496 0Z"
+                    clipRule="evenodd"
+                  />
+                    {/* SVG path */}
+                  </svg>
+                </button>
 
-    {/* Dropdown content */}
-    {showDropdown && (
-      <div className="absolute top-12 right-0 w-64 bg-white border border-gray-200 shadow-lg rounded-lg">
-        {/* Notifications list */}
-        <ul className="divide-y divide-gray-200">
-        {restock?.map((category) => (
-                (category.restockMSG==true) ? 
-                   <li key={category.ProductID} className="p-4" >{category.ProductName} needs to be restocked</li>
-                :   
-                    null
-            ))}
-        </ul>
-      </div>
-    )}
-  </div>
-)}
+                {/* Dropdown content */}
+                {showDropdown && (
+                  <div className="absolute top-12 right-0 w-64 bg-white border border-gray-200 shadow-lg rounded-lg">
+                    {/* Notifications list */}
+                    <ul className="divide-y divide-gray-200">
+                    {restock?.map((category) => (
+                            (category.restockMSG==true) ? 
+                              <li key={category.ProductID} className="p-4" >{category.ProductName} needs to be restocked</li>
+                            :   
+                                null
+                        ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
 
 
 
