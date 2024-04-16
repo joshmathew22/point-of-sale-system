@@ -155,15 +155,12 @@ const [showDropdown, setShowDropdown] = useState(false);
                 {(user==0)? //check if user is signed in 
                   <a href="pages/login" className="hover:text-gray-500">Log in</a>:<button className="hover:text-gray-500"onClick={() =>signOut(0)}>Sign Out</button>
                 }
+                <div className="flex justify-between items-center">
                 {(isManager)?
                 <a href="pages/dashboard" className="hover:text-gray-500">Dashboard</a>:null
                 }
-                <a href="pages/cart" className="hover:text-gray-500">Cart</a>
-          </div>
-          <div className="flex justify-between">
-            <a href="pages/orders" className="hover:text-gray-500">Orders</a>
-            {isManager && (
-              <div className="relative">
+                {isManager && (
+              <div className="relative z-20">
                 {/* Button to toggle dropdown visibility */}
                 <button
                   className="relative z-10 p-2"
@@ -201,6 +198,11 @@ const [showDropdown, setShowDropdown] = useState(false);
                 )}
               </div>
             )}
+            </div>
+                <a href="pages/cart" className="hover:text-gray-500">Cart</a>
+          </div>
+          <div className="flex justify-between">
+            <a href="pages/orders" className="hover:text-gray-500">Orders</a>
 
 
 
@@ -256,4 +258,3 @@ const [showDropdown, setShowDropdown] = useState(false);
   )
 }
 //export{cart}
-
