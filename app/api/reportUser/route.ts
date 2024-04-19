@@ -37,11 +37,11 @@ export async function GET(req: NextRequest) {
     FROM Users u
     INNER JOIN Orders
     ON u.UserID = Orders.UserID
-    WHERE u.Email = ${email} 
-    AND OrderDate BETWEEN ${startDate} AND ${endDate}
+    WHERE OrderDate BETWEEN ${startDate} AND ${endDate}
     ORDER BY OrderDate DESC;
     `
     return new Response(JSON.stringify(report))
 }
 
 //  AND OrderDate BETWEEN ${adjustedStartDate} AND ${endDate}
+//u.Email = ${email} AND

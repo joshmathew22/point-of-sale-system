@@ -117,6 +117,7 @@ model product {
   ExpirationDate  DateTime       @db.Date
   NutritionValues String         @db.VarChar(255)
   restockMSG      Int            @default(0) @db.TinyInt
+  restockFlag     String?        @default("\"You don't need to restock\"") @db.VarChar(255)
   isDeleted       Int?           @default(0) @db.TinyInt
   SupplierID      Int
   SupplierName    String?        @db.VarChar(45)

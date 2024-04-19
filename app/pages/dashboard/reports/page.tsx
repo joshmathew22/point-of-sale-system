@@ -169,23 +169,7 @@ const[productDateReportData, setProductDateReportData]=useState(addProductReport
                         <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
                             <h2 className="text-xl font-semibold">User Report</h2>
                             <form onSubmit={userSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
-                                        <label htmlFor="email">
-                                            Email<span className="text-red-500">*</span>
-                                        </label>
-                                        <select
-                                            id="email"
-                                            className="border-4 border-black rounded-lg w-full"
-                                            value={email}
-                                            onChange={onUserReportChange}
-                                            required
-                                        >
-                                            <option>Select One</option>
-                                            {users?.map((user, index) => (
-                                                <option key={index} value={user.Email}>{user.Email}</option>
-                                            ))}
-
-                                            {/* Add more options as needed */}
-                                        </select>
+                                        
                                         <div className="flex justify-center mt-5">
                                             <div className="text-center text-lg leading-9 tracking-tight text-gray-900 mr-4">
                                                 <label htmlFor="orderDateStart">
@@ -219,9 +203,7 @@ const[productDateReportData, setProductDateReportData]=useState(addProductReport
                                     <th scope="col" className="px-6 py-3">
                                         Name
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        UserID
-                                    </th>
+                                   
                                     <th scope="col" className="px-6 py-3">
                                         OrderDate
                                     </th>
@@ -242,9 +224,7 @@ const[productDateReportData, setProductDateReportData]=useState(addProductReport
                                         <td className="px-6 py-4">
                                             {report.Name}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            {report.UserID}
-                                        </td>
+                                       
                                         <td className="px-6 py-4">
                                             {(() => {
                                                 const orderDate = new Date(report.OrderDate);
@@ -455,3 +435,111 @@ const[productDateReportData, setProductDateReportData]=useState(addProductReport
 }
 
 export default Reports;
+
+
+
+
+{/*
+ <div className="p-6 shadow-lg rounded-lg bg-white border border-red-200 m-4">
+                            <h2 className="text-xl font-semibold">Seller Report</h2>
+                            <form onSubmit={userSubmit} className="mt-5 text-center text-lg leading-9 tracking-tight text-gray-900">
+                                        <label htmlFor="email">
+                                            Email<span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            id="email"
+                                            className="border-4 border-black rounded-lg w-full"
+                                            value={email}
+                                            onChange={onUserReportChange}
+                                            required
+                                        >
+                                            <option>Select One</option>
+                                            {users?.map((user, index) => (
+                                                <option key={index} value={user.Email}>{user.Email}</option>
+                                            ))}
+
+                                           
+                                            </select>
+                                            <div className="flex justify-center mt-5">
+                                                <div className="text-center text-lg leading-9 tracking-tight text-gray-900 mr-4">
+                                                    <label htmlFor="orderDateStart">
+                                                        Order Date From<span className="text-red-500">*</span>
+                                                    </label>
+                                                    <input className="border-4 border-black rounded-lg w-full" type="date" id="orderDateStart" value={orderDateStart} onChange={onUserReportDateChange} required />
+                                                </div>
+                                                <div className="text-center text-lg leading-9 tracking-tight text-gray-900">
+                                                    <label htmlFor="orderDateEnd">
+                                                        Order Date To <span className="text-red-500">*</span>
+                                                    </label>
+                                                    <input className="border-4 border-black rounded-lg w-full" type="date" id="orderDateEnd" value={orderDateEnd} onChange={onUserReportDateChange} required />
+                                                </div>
+                                            </div>
+                                            <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+                                                Generate User Report
+                                            </button>
+                                            <br />
+                                        </form>
+                                        
+    
+                            </div>
+                            
+                        {userReport ?(
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3">
+                                            Email
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Name
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            UserID
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            OrderDate
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            TotalPrice
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            QuantityTotal
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {userReport?.map((report, index) => (
+                                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {report.Email}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {report.Name}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {report.UserID}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {(() => {
+                                                    const orderDate = new Date(report.OrderDate);
+                                                    orderDate.setDate(orderDate.getDate() + 1); // Advance the date by one day
+                                                    return orderDate.toLocaleDateString();
+                                                })()}
+                                                </td>
+                                            <td className="px-6 py-4">
+                                                 {report.TotalPrice.toFixed(2)} $
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {report.QuantityTotal}
+                                            </td>
+    
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )
+                        :
+                        null}
+                        </div>
+    */
+}
