@@ -1,4 +1,5 @@
 Hosted Web App Link: https://point-of-sale-system-seven.vercel.app/
+This is a full-stack web application built using TypeScript, Tailwindcss, and Next.js. It uses Microsoft Azure for database hosting and is deployed through Vercel.
 
 To run this project locally:
 1. git clone https://github.com/joshmathew22/point-of-sale-system.git
