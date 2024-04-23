@@ -1,4 +1,4 @@
-Hosted Web App Link: https://point-of-sale-system-seven.vercel.app/
+Hosted Web App Link: https://point-of-sale-project.vercel.app
 Pre-requites:
 1. Have an IDE of your choice or any text editor
 2. Make sure to have NodeJs installed on your machine (important)
